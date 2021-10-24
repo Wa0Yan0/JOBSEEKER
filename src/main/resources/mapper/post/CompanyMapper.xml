@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.atom.jobseeker.post.dao.CompanyDao">
+    <select id="selectOneById" resultType="company">
+        select * from company where id = #{id}
+    </select>
+    <select id="selectListWithLimit" resultType="com.atom.jobseeker.post.pojo.Job">
+        select * from job limit #{begin}, #{pageSize}
+    </select>
+    <select id="selectTotalCount" resultType="java.lang.Integer">
+        select count(*) from job
+    </select>
+    <select id="selectNameById" resultType="java.lang.String">
+        select name from company where id = #{id}
+    </select>
+
+</mapper>
+

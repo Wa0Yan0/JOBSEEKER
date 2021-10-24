@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://47.102.139.195/jobseeker_post?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: mapper/post/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.atom.jobseeker.post.pojo
+
+logging:
+  level:
+    com.atom.jobseeker: debug
