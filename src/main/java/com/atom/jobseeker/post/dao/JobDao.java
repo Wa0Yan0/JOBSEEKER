@@ -41,4 +41,11 @@ public interface JobDao {
      * @param status
      */
     void updateIssueStatus(@Param("id") Long id,@Param("status") String status);
+
+    /**
+     * 根据id查询状态
+     * @param id
+     * @return
+     */
+    String selectIssueStatus(@Param("id") Long id);
 }

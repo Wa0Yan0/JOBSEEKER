@@ -17,6 +17,9 @@
     <select id="selectTotalCount" resultType="java.lang.Integer">
         select count(*) from job
     </select>
+    <select id="selectIssueStatus" resultType="java.lang.String">
+        select issue_status from job where id = #{id}
+    </select>
 
 </mapper>
 

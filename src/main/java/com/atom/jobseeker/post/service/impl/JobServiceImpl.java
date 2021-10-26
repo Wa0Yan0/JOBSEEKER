@@ -3,13 +3,14 @@ package com.atom.jobseeker.post.service.impl;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
+import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import com.atom.jobseeker.common.constant.JobConstant;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -61,7 +62,36 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobEs genJobEs(Long id) {
-        //TODO 生成jobEs实体
-        return null;
+        Job job = jobDao.selectOneById(id);
+        Company company = companyDao.selectOneById(job.getCompanyId());
+        JobEs jobEs = new JobEs(job, company);
+        jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
+        return jobEs;
+    }
+
+    @Override
+    public String queryIssueStatus(Long id) {
+        return jobDao.selectIssueStatus(id);
+    }
+
+
+    /**
+     * 计算薪资区间的平均值
+     * @param salaryText
+     * @return
+     */
+    private static float handleSalary(String salaryText) {
+        float avgSalary = 0.0f;
+        if (salaryText.endsWith(JobConstant.unitEnum.UNIT_THOUSAND.getUnit())) {
+            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_THOUSAND.getUnit().substring(0, 1))[0].split("-");
+            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 1000;
+        } else if (salaryText.endsWith(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit())) {
+            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit().substring(0, 1))[0].split("-");
+            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 10000;
+        } else {
+            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit().substring(0, 1))[0].split("-");
+            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 10000 / 12;
+        }
+        return avgSalary;
     }
 }

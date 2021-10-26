@@ -26,5 +26,4 @@ public class Job {
     private Long companyId;
     private Integer cityId;
     private Integer majorId;
-    private String url;
 }

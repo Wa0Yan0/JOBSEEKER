@@ -2,6 +2,7 @@ package com.atom.jobseeker.post.controller;
 
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
+import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.CheckVo;
@@ -12,7 +13,9 @@ import com.atom.jobseeker.search.service.ElasticJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author wayan
@@ -63,13 +66,29 @@ public class JobController {
     @RequestMapping("/check")
     public R changeStatusAndPush(@RequestBody CheckVo checkVo){
         for (Long id : checkVo.getIds()) {
-            if ("通过".equals(checkVo.getStatus())) {
-                //TODO 生成jobEs实体
+            String issueStatus = jobService.queryIssueStatus(id);
+            if ("通过".equals(checkVo.getStatus()) && !"通过".equals(issueStatus) ) {
                 JobEs jobEs = jobService.genJobEs(id);
-                //TODO 上传到ElasticSearch
                 elasticJobService.upToElastic(jobEs);
             }
             jobService.changeIssueStatus(id, checkVo.getStatus());
+        }
+        return R.ok();
+    }
+
+    /**
+     * 下架岗位信息
+     * @param checkVo
+     * @return
+     */
+    @RequestMapping("/offShelf")
+    public R offShelf(@RequestBody CheckVo checkVo){
+        for (Long id : checkVo.getIds()) {
+            String issueStatus = jobService.queryIssueStatus(id);
+            if ("通过".equals(issueStatus)){
+                elasticJobService.downFromElastic(id);
+                jobService.changeIssueStatus(id, "待审核");
+            }
         }
         return R.ok();
     }

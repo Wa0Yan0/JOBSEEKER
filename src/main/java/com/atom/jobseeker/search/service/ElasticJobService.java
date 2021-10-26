@@ -12,4 +12,10 @@ public interface ElasticJobService {
      * @param jobEs
      */
     void upToElastic(JobEs jobEs);
+
+    /**
+     * 将数据模型从ElasticSearch中删除
+     * @param id
+     */
+    void downFromElastic(Long id);
 }

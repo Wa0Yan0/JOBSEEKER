@@ -39,4 +39,11 @@ public interface JobService {
      * @return
      */
     JobEs genJobEs(Long id);
+
+    /**
+     * 根据id查询岗位状态
+     * @param id
+     * @return
+     */
+    String queryIssueStatus(Long id);
 }
