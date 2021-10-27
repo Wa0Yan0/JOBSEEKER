@@ -13,6 +13,7 @@ import java.util.Date;
  * @author wayan
  */
 @Data
+@AllArgsConstructor
 public class JobEs {
     private Long jobId;
     private String jobName;

@@ -11,7 +11,9 @@ import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.util.ArrayUtil;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
@@ -37,22 +39,24 @@ public class JobController {
 
     /**
      * 获取所有数据，带有分页
+     *
      * @param params
      * @return
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = jobService.queryPage(params);
         return R.ok().wrapper("page", page);
     }
 
     /**
      * 通过id查找对应的岗位信息
+     *
      * @param id
      * @return
      */
     @RequestMapping("/{id}")
-    public R getJobInfo(@PathVariable("id") Long id){
+    public R getJobInfo(@PathVariable("id") Long id) {
         JobVo jobInfo = jobService.queryJobById(id);
         CompanyVo companyInfo = companyService.queryCompanyById(jobInfo.getCompanyId());
         return R.ok().wrapper("jobInfo", jobInfo).wrapper("companyInfo", companyInfo);
@@ -60,38 +64,33 @@ public class JobController {
 
     /**
      * 修改状态并保存到ElasticSearch中
+     *
      * @param checkVo
      * @return
      */
     @RequestMapping("/check")
-    public R changeStatusAndPush(@RequestBody CheckVo checkVo){
-        for (Long id : checkVo.getIds()) {
-            String issueStatus = jobService.queryIssueStatus(id);
-            if ("通过".equals(checkVo.getStatus()) && !"通过".equals(issueStatus) ) {
-                JobEs jobEs = jobService.genJobEs(id);
-                elasticJobService.upToElastic(jobEs);
-            }
-            jobService.changeIssueStatus(id, checkVo.getStatus());
-        }
+    public R changeStatusAndPush(@RequestBody CheckVo checkVo) {
+        Long[] ids = jobService.filterIds(checkVo);
+        System.out.println(ids);
+//        JobEs jobEs = jobService.genJobEs(ids);
+//        elasticJobService.upToElastic(jobEs);
+//        jobService.changeIssueStatus(ids, checkVo.getStatus());
         return R.ok();
     }
 
     /**
      * 下架岗位信息
+     *
      * @param checkVo
      * @return
      */
     @RequestMapping("/offShelf")
-    public R offShelf(@RequestBody CheckVo checkVo){
-        for (Long id : checkVo.getIds()) {
-            String issueStatus = jobService.queryIssueStatus(id);
-            if ("通过".equals(issueStatus)){
-                elasticJobService.downFromElastic(id);
-                jobService.changeIssueStatus(id, "待审核");
-            }
-        }
+    public R offShelf(@RequestBody CheckVo checkVo) {
+        Long[] ids = jobService.filterIds(checkVo);
+        System.out.println(ids);
+//        elasticJobService.downFromElastic(ids);
+//        jobService.changeIssueStatus(ids, "待审核");
         return R.ok();
     }
-
 
 }

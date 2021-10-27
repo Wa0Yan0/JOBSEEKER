@@ -2,6 +2,9 @@ package com.atom.jobseeker.post.vo;
 
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author wayan
  */
@@ -22,4 +25,8 @@ public class JobVo {
     private Integer showStatus;
     private String companyName;
     private Long companyId;
+
+    public void setIssueDate(Date issueDate) {
+        this.issueDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(issueDate);
+    }
 }

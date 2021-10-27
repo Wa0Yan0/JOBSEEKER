@@ -1,11 +1,13 @@
 package com.atom.jobseeker.post.service.impl;
 
+import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
 import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.JobService;
+import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.atom.jobseeker.common.constant.JobConstant;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,14 +34,14 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        PageUtils pageUtils = new PageUtils(params, jobDao.selectTotalCount());
-        int begin = (pageUtils.getCurrPage() - 1) * pageUtils.getPageSize();
-        List<Job> jobs = jobDao.selectListWithLimit(begin, pageUtils.getPageSize());
+        IPage iPage = new IPage(params);
+        iPage.setTotalCount(jobDao.selectTotalCount());
+        PageUtils pageUtils = new PageUtils(iPage);
+        List<Job> jobs = jobDao.selectListWithLimit(iPage.getBegin(), iPage.getPageSize());
         List<JobVo> jobVos = jobs.stream().map(job -> {
             JobVo jobVo = new JobVo();
             BeanUtils.copyProperties(job, jobVo);
             jobVo.setCompanyName(companyDao.selectNameById(job.getCompanyId()));
-            jobVo.setIssueDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(job.getIssueDate()));
             return jobVo;
         }).collect(Collectors.toList());
         pageUtils.setList(jobVos);
@@ -51,7 +53,6 @@ public class JobServiceImpl implements JobService {
         Job job = jobDao.selectOneById(id);
         JobVo jobVo = new JobVo();
         BeanUtils.copyProperties(job, jobVo);
-        jobVo.setIssueDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(job.getIssueDate()));
         return jobVo;
     }
 
@@ -74,9 +75,31 @@ public class JobServiceImpl implements JobService {
         return jobDao.selectIssueStatus(id);
     }
 
+    @Override
+    public Long[] filterIds(CheckVo checkVo) {
+        ArrayList<Long> ids = new ArrayList<>();
+        for (Long id : checkVo.getIds()) {
+            if (!"".equals(checkVo.getStatus())) {
+                if ("通过".equals(checkVo.getStatus())) {
+                    String issueStatus = jobDao.selectIssueStatus(id);
+                    if (!"通过".equals(issueStatus)) {
+                        ids.add(id);
+                    }
+                }
+            }else{
+                String issueStatus = jobDao.selectIssueStatus(id);
+                if ("通过".equals(issueStatus)) {
+                    ids.add(id);
+                }
+            }
+        }
+        return ids.toArray(new Long[0]);
+    }
+
 
     /**
      * 计算薪资区间的平均值
+     *
      * @param salaryText
      * @return
      */

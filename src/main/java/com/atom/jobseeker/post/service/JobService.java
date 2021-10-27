@@ -2,6 +2,7 @@ package com.atom.jobseeker.post.service;
 
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.pojo.Job;
+import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
 
@@ -46,4 +47,12 @@ public interface JobService {
      * @return
      */
     String queryIssueStatus(Long id);
+
+
+    /**
+     * 过滤岗位id
+     * @param checkVo
+     * @return
+     */
+    Long[] filterIds(CheckVo checkVo);
 }
