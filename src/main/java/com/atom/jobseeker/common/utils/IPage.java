@@ -1,11 +1,14 @@
 package com.atom.jobseeker.common.utils;
 
+import com.atom.jobseeker.post.vo.QueryVo;
+import lombok.Data;
+
 import java.util.Map;
 
 /**
  * @author wayan
  */
-
+@Data
 public class IPage {
     /**
      * 总记录数
@@ -27,8 +30,12 @@ public class IPage {
      * 开始获取的位置
      */
     private int begin;
+    /**
+     * 查询参数
+     */
+    private String query;
 
-    public IPage(Map<String, Object> params){
+    public IPage(Map<String, Object> params) {
         this.currPage = Integer.parseInt(params.get("pageNum").toString());
         this.pageSize = Integer.parseInt(params.get("pageSize").toString());
         this.begin = (this.currPage - 1) * this.pageSize;
@@ -40,7 +47,7 @@ public class IPage {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
-        this.totalPage = totalCount % this.pageSize == 0 ? totalCount/this.pageSize : totalCount/this.pageSize + 1;
+        this.totalPage = totalCount % this.pageSize == 0 ? totalCount / this.pageSize : totalCount / this.pageSize + 1;
     }
 
     public int getPageSize() {

@@ -2,6 +2,7 @@ package com.atom.jobseeker.post.dao;
 
 
 import com.atom.jobseeker.post.pojo.Job;
+import com.atom.jobseeker.post.vo.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,11 +24,12 @@ public interface JobDao {
 
     /**
      * 分页查询数据
+     * @param queryInfo
      * @param begin
      * @param pageSize
      * @return
      */
-    List<Job> selectListWithLimit(@Param("begin") int begin, @Param("pageSize") int pageSize);
+    List<Job> selectListWithQuery(@Param("queryInfo") QueryVo queryInfo, @Param("begin") int begin, @Param("pageSize") int pageSize);
 
     /**
      * 查询总数
@@ -37,10 +39,10 @@ public interface JobDao {
 
     /**
      *  跟新发布状态
-     * @param id
+     * @param ids
      * @param status
      */
-    void updateIssueStatus(@Param("id") Long id,@Param("status") String status);
+    void updateBathIssueStatus(@Param("ids") Long[] ids,@Param("status") String status);
 
     /**
      * 根据id查询状态
@@ -48,4 +50,18 @@ public interface JobDao {
      * @return
      */
     String selectIssueStatus(@Param("id") Long id);
+
+    /**
+     * 根据id列表批量查询数据
+     * @param ids
+     * @return
+     */
+    List<Job> selectListById(@Param("ids") Long[] ids);
+
+    /**
+     * 查询带条件的记录总数
+     * @param queryInfo
+     * @return
+     */
+    long selectCountWithQuery(@Param("queryInfo") QueryVo queryInfo);
 }

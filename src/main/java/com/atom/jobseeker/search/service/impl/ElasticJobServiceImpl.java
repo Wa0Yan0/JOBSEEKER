@@ -3,11 +3,14 @@ package com.atom.jobseeker.search.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
+import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.config.ElasticSearchConfig;
 import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -39,25 +42,26 @@ public class ElasticJobServiceImpl implements ElasticJobService {
     private RestHighLevelClient esClient;
 
     @Override
-    public void upToElastic(JobEs jobEs) {
-        try {
+    public boolean upToElastic(List<JobEs> jobEsList) throws IOException {
+        BulkRequest bulkRequest = new BulkRequest();
+        jobEsList.forEach(jobEs -> {
             String jobEsStr = JSON.toJSONString(jobEs);
             IndexRequest indexRequest = new IndexRequest(EsConstant.JOB_INDEX).id(jobEs.getJobId().toString()).source(jobEsStr, XContentType.JSON);
-            esClient.index(indexRequest, ElasticSearchConfig.COMMON_OPTIONS);
-        } catch (IOException e) {
-            //TODO 上传失败
-            e.printStackTrace();
-        }
+            bulkRequest.add(indexRequest);
+        });
+        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
+        return bulk.hasFailures();
     }
 
     @Override
-    public void downFromElastic(Long id) {
-        try {
-            esClient.delete(new DeleteRequest(EsConstant.JOB_INDEX, id.toString()), ElasticSearchConfig.COMMON_OPTIONS);
-        } catch (IOException e) {
-            //TODO 下架失败
-            e.printStackTrace();
+    public boolean downFromElastic(Long[] ids) throws IOException {
+        BulkRequest bulkRequest = new BulkRequest();
+        for (Long id : ids) {
+            DeleteRequest deleteRequest = new DeleteRequest(EsConstant.JOB_INDEX, id.toString());
+            bulkRequest.add(deleteRequest);
         }
+        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
+        return bulk.hasFailures();
     }
 
     @Override

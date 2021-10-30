@@ -25,8 +25,4 @@ public class JobVo {
     private Integer showStatus;
     private String companyName;
     private Long companyId;
-
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(issueDate);
-    }
 }

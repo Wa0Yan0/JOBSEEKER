@@ -1,6 +1,6 @@
 package com.atom.jobseeker.post.service;
 
-import com.atom.jobseeker.post.vo.CompanyVo;
+import com.atom.jobseeker.post.pojo.Company;
 
 /**
  * @author wayan
@@ -11,5 +11,5 @@ public interface CompanyService {
      * @param id
      * @return
      */
-    CompanyVo queryCompanyById(Long id);
+    Company queryCompanyById(Long id);
 }

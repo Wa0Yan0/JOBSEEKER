@@ -19,7 +19,7 @@ public class Job {
     private String experience;
     private String education;
     private String peopleCount;
-    private Date issueDate;
+    private String issueDate;
     private String issueStatus;
     private String jobInfo;
     private Integer showStatus;

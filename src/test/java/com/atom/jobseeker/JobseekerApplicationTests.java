@@ -1,11 +1,15 @@
 package com.atom.jobseeker;
 
 import com.alibaba.fastjson.JSON;
+import com.atom.jobseeker.attr.dao.AttrDao;
+import com.atom.jobseeker.attr.pojo.Major;
 import com.atom.jobseeker.post.dao.JobDao;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.search.config.ElasticSearchConfig;
 import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.JobEs;
+import com.atom.jobseeker.system.pojo.Menu;
+import com.atom.jobseeker.system.service.MenuService;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -36,10 +40,16 @@ class JobseekerApplicationTests {
     @Resource
     private RestHighLevelClient esClient;
 
+    @Resource
+    private AttrDao attrDao;
+
+    @Resource
+    private MenuService menuService;
+
     @Test
     void contextLoads() {
-        JobEs jobEs = jobService.genJobEs(114351420L);
-        System.out.println(jobEs.toString());
+//        JobEs jobEs = jobService.genJobEs(114351420L);
+//        System.out.println(jobEs.toString());
     }
 
     @Test
@@ -70,5 +80,18 @@ class JobseekerApplicationTests {
             System.out.println(aLong);
         }
     }
+
+    @Test
+    void test1() {
+        List<Major> majors = attrDao.selectMajorList();
+        System.out.println(majors);
+    }
+
+    @Test
+    void Menu() {
+        List<Menu> menus = menuService.genMenuList();
+        System.out.println(menus);
+    }
+
 
 }

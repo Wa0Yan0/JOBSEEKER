@@ -8,9 +8,8 @@ import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.CheckVo;
-import com.atom.jobseeker.post.vo.JobVo;
+import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.es.JobEs;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.atom.jobseeker.common.constant.JobConstant;
 
@@ -18,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -34,40 +34,40 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        AtomicInteger count = new AtomicInteger();
+        params.forEach((key, value) -> {
+            if ("".equals(value)) {
+                count.addAndGet(1);
+            }
+        });
+        QueryVo queryVo = new QueryVo(params);
         IPage iPage = new IPage(params);
-        iPage.setTotalCount(jobDao.selectTotalCount());
+        iPage.setTotalCount(count.get() == params.size() - 2 ? jobDao.selectTotalCount() : jobDao.selectCountWithQuery(queryVo));
         PageUtils pageUtils = new PageUtils(iPage);
-        List<Job> jobs = jobDao.selectListWithLimit(iPage.getBegin(), iPage.getPageSize());
-        List<JobVo> jobVos = jobs.stream().map(job -> {
-            JobVo jobVo = new JobVo();
-            BeanUtils.copyProperties(job, jobVo);
-            jobVo.setCompanyName(companyDao.selectNameById(job.getCompanyId()));
-            return jobVo;
-        }).collect(Collectors.toList());
-        pageUtils.setList(jobVos);
+        List<Job> jobs = jobDao.selectListWithQuery(queryVo, iPage.getBegin(), iPage.getPageSize());
+        pageUtils.setList(jobs);
         return pageUtils;
     }
 
     @Override
-    public JobVo queryJobById(Long id) {
-        Job job = jobDao.selectOneById(id);
-        JobVo jobVo = new JobVo();
-        BeanUtils.copyProperties(job, jobVo);
-        return jobVo;
+    public Job queryJobById(Long id) {
+        return jobDao.selectOneById(id);
     }
 
     @Override
-    public void changeIssueStatus(Long id, String status) {
-        jobDao.updateIssueStatus(id, status);
+    public void updateBathIssueStatus(Long[] ids, String status) {
+        jobDao.updateBathIssueStatus(ids, status);
     }
 
     @Override
-    public JobEs genJobEs(Long id) {
-        Job job = jobDao.selectOneById(id);
-        Company company = companyDao.selectOneById(job.getCompanyId());
-        JobEs jobEs = new JobEs(job, company);
-        jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
-        return jobEs;
+    public List<JobEs> genJobEsList(Long[] ids) {
+        List<Job> jobList = jobDao.selectListById(ids);
+        return jobList.stream().map(job -> {
+            Company company = companyDao.selectOneById(job.getCompanyId());
+            JobEs jobEs = new JobEs(job, company);
+            jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
+            return jobEs;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -79,14 +79,14 @@ public class JobServiceImpl implements JobService {
     public Long[] filterIds(CheckVo checkVo) {
         ArrayList<Long> ids = new ArrayList<>();
         for (Long id : checkVo.getIds()) {
-            if (!"".equals(checkVo.getStatus())) {
+            if (checkVo.getStatus() != null) {
                 if ("通过".equals(checkVo.getStatus())) {
                     String issueStatus = jobDao.selectIssueStatus(id);
                     if (!"通过".equals(issueStatus)) {
                         ids.add(id);
                     }
                 }
-            }else{
+            } else {
                 String issueStatus = jobDao.selectIssueStatus(id);
                 if ("通过".equals(issueStatus)) {
                     ids.add(id);
