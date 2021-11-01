@@ -1,5 +1,6 @@
 package com.atom.jobseeker.post.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
@@ -8,7 +9,10 @@ import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
+import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import com.atom.jobseeker.common.constant.JobConstant;
 
@@ -30,8 +34,10 @@ public class JobServiceImpl implements JobService {
     @Resource
     private CompanyDao companyDao;
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    public PageUtils queryPageFromDB(Map<String, Object> params) {
         PageUtils pageUtils = new PageUtils(params, jobDao.selectTotalCount());
         int begin = (pageUtils.getCurrPage() - 1) * pageUtils.getPageSize();
         List<Job> jobs = jobDao.selectListWithLimit(begin, pageUtils.getPageSize());
@@ -44,6 +50,17 @@ public class JobServiceImpl implements JobService {
         }).collect(Collectors.toList());
         pageUtils.setList(jobVos);
         return pageUtils;
+    }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params) {
+        String jobList = redisTemplate.opsForValue().get("jobList");
+        if (StringUtils.isNullOrEmpty(jobList)){
+            PageUtils pageUtils = queryPageFromDB(params);
+            redisTemplate.opsForValue().set("jobList", JSON.toJSONString(pageUtils));
+            return pageUtils;
+        }
+        return JSON.parseObject(jobList, PageUtils.class);
     }
 
     @Override

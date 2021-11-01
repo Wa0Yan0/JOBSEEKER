@@ -4,6 +4,11 @@ spring:
     password: root
     url: jdbc:mysql://47.102.139.195/jobseeker_post?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 47.102.139.195
+    port: 6379
+    password: admin
+
 
 mybatis:
   mapper-locations: mapper/post/*.xml
@@ -14,3 +19,4 @@ mybatis:
 logging:
   level:
     com.atom.jobseeker: debug
+
