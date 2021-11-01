@@ -91,8 +91,7 @@ class JobseekerApplicationTests {
 
     @Test
     void Menu() {
-        List<Menu> menus = menuService.genMenuList();
-        System.out.println(menus);
+
     }
 
 

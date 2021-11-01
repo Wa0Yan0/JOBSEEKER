@@ -14,5 +14,5 @@ public interface MenuService {
      * 生成tree型菜单结构
      * @return
      */
-    List<Menu> genMenuList();
+    List<Menu> queryMenu();
 }

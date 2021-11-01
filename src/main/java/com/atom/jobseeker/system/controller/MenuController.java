@@ -22,7 +22,7 @@ public class MenuController {
 
     @RequestMapping("/list")
     public R list(){
-        List<Menu> menuList = menuService.genMenuList();
+        List<Menu> menuList = menuService.queryMenu();
         return R.ok().wrapper("menus", menuList);
     }
 }
