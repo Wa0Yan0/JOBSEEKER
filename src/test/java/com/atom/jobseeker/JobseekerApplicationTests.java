@@ -23,9 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -48,8 +46,12 @@ class JobseekerApplicationTests {
 
     @Test
     void contextLoads() {
-//        JobEs jobEs = jobService.genJobEs(114351420L);
-//        System.out.println(jobEs.toString());
+        Map<String, Object> params = new HashMap<>();  //定义Map集合
+        params.put("apple","新鲜的苹果");  //向集合中添加元素
+        params.put("computer","配置优良的计算机");
+        params.put("book","堆积成山的图书");
+        List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
+        System.out.println(keys);
     }
 
     @Test

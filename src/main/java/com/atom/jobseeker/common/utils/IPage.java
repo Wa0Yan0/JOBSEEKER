@@ -3,7 +3,9 @@ package com.atom.jobseeker.common.utils;
 import com.atom.jobseeker.post.vo.QueryVo;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author wayan
@@ -36,8 +38,15 @@ public class IPage {
     private String query;
 
     public IPage(Map<String, Object> params) {
-        this.currPage = Integer.parseInt(params.get("pageNum").toString());
-        this.pageSize = Integer.parseInt(params.get("pageSize").toString());
+        this.currPage = 1;
+        this.pageSize = 10;
+        List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
+        if (keys.contains("pageNum")) {
+            this.currPage = Integer.parseInt(params.get("pageNum").toString());
+        }
+        if (keys.contains("pageSize")) {
+            this.pageSize = Integer.parseInt(params.get("pageSize").toString());
+        }
         this.begin = (this.currPage - 1) * this.pageSize;
     }
 

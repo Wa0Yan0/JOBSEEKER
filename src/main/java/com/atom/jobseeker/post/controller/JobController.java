@@ -16,7 +16,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author wayan
@@ -24,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @RestController
 @RequestMapping("/post/job")
-
 public class JobController {
 
     @Resource
@@ -47,19 +45,6 @@ public class JobController {
         PageUtils page = jobService.queryPage(params);
         return R.ok().wrapper("page", page);
     }
-
-    /**
-     * 高级搜索，获取所有数据，带有分页
-     *
-     * @param params
-     * @return
-     */
-    @RequestMapping("/search/list")
-    public R searchList(@RequestParam Map<String, Object> params) {
-        PageUtils page = jobService.queryPage(params);
-        return R.ok().wrapper("page", page);
-    }
-
 
     /**
      * 通过id查找对应的岗位信息

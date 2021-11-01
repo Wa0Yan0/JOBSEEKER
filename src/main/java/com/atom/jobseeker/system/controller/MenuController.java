@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/sys/menu")
 public class MenuController {
 
     @Resource
