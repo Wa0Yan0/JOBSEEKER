@@ -13,6 +13,7 @@ import java.util.Date;
  * @author wayan
  */
 @Data
+@AllArgsConstructor
 public class JobEs {
     private Long jobId;
     private String jobName;
@@ -42,7 +43,7 @@ public class JobEs {
         this.experience = job.getExperience();
         this.education = job.getEducation();
         this.peopleCount = job.getPeopleCount();
-        this.issueDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(job.getIssueDate());
+        this.issueDate =job.getIssueDate();
         this.companyId = job.getCompanyId();
         this.companyName = company.getName();
         this.size = company.getSize();

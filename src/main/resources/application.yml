@@ -11,7 +11,7 @@ spring:
 
 
 mybatis:
-  mapper-locations: mapper/post/*.xml
+  mapper-locations: mapper/*/*.xml
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.atom.jobseeker.post.pojo

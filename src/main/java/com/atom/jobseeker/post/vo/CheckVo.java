@@ -1,5 +1,6 @@
 package com.atom.jobseeker.post.vo;
 
+import com.atom.jobseeker.search.es.JobEs;
 import lombok.Data;
 
 /**

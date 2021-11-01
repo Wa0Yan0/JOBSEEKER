@@ -17,7 +17,7 @@ public class PageUtils {
     /**
      * 总记录数
      */
-    private int totalCount;
+    private long totalCount;
     /**
      * 每页记录数
      */
@@ -25,7 +25,7 @@ public class PageUtils {
     /**
      * 总页数
      */
-    private int totalPage;
+    private long totalPage;
     /**
      * 当前页数
      */
@@ -35,10 +35,11 @@ public class PageUtils {
      */
     private List<?> list;
 
-    public PageUtils(Map<String, Object> params, int totalCount){
-        this.currPage = Integer.parseInt(params.get("pageNum").toString());
-        this.pageSize = Integer.parseInt(params.get("pageSize").toString());
-        this.totalCount = totalCount;
-        this.totalPage = totalCount % this.pageSize == 0 ? totalCount/this.pageSize : totalCount/this.pageSize + 1;
+
+    public PageUtils(IPage iPage){
+        this.currPage = iPage.getCurrPage();
+        this.pageSize = iPage.getPageSize();
+        this.totalCount = iPage.getTotalCount();
+        this.totalPage = iPage.getTotalPage();
     }
 }

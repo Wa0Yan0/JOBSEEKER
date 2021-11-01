@@ -23,7 +23,7 @@ public class ElasticSearchConfig implements WebMvcConfigurer {
     @Bean
     public RestHighLevelClient esRestClient() {
         return new RestHighLevelClient(
-                RestClient.builder(new HttpHost("47.102.139.195", 9200, "http"))
+                RestClient.builder(new HttpHost("101.35.85.145", 9200, "http"))
         );
     }
 }

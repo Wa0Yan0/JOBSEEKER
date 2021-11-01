@@ -5,20 +5,65 @@
 
 
 <mapper namespace="com.atom.jobseeker.post.dao.JobDao">
-    <update id="updateIssueStatus">
-        update job set issue_status = #{status} where id = #{id}
+    <update id="updateBathIssueStatus">
+        update job set issue_status = #{status} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </update>
     <select id="selectOneById" resultType="Job">
-        select * from job where id = #{id}
+        select *
+        from job
+        where id = #{id}
     </select>
-    <select id="selectListWithLimit" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job limit #{begin}, #{pageSize}
+    <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Job">
+        select * from job where 1=1
+        <if test="queryInfo.query != ''">
+            and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+        </if>
+        <if test="queryInfo.cityId != 0">
+            and city_id = #{queryInfo.cityId}
+        </if>
+        <if test="queryInfo.majorId != 0">
+            and major_id = #{queryInfo.majorId}
+        </if>
+        <if test="queryInfo.issueStatus != ''">
+            and issue_status = #{queryInfo.issueStatus}
+        </if>
+        <if test="queryInfo.issueDate != ''">
+            and issue_date like #{queryInfo.issueDate}"%"
+        </if>
+        limit #{begin}, #{pageSize}
     </select>
     <select id="selectTotalCount" resultType="java.lang.Integer">
-        select count(*) from job
+        select count(*)
+        from job
     </select>
     <select id="selectIssueStatus" resultType="java.lang.String">
-        select issue_status from job where id = #{id}
+        select issue_status
+        from job
+        where id = #{id}
+    </select>
+    <select id="selectListById" resultType="com.atom.jobseeker.post.pojo.Job">
+        select * from job where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="selectCountWithQuery" resultType="java.lang.Long">
+        select count(*) from job where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+        <if test="queryInfo.cityId != 0">
+            and city_id = #{queryInfo.cityId}
+        </if>
+        <if test="queryInfo.majorId != 0">
+            and major_id = #{queryInfo.majorId}
+        </if>
+        <if test="queryInfo.issueStatus != ''">
+            and issue_status = #{queryInfo.issueStatus}
+        </if>
+        <if test="queryInfo.issueDate != ''">
+            and issue_date like #{queryInfo.issueDate}"%"
+        </if>
     </select>
 
 </mapper>

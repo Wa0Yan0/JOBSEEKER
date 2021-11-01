@@ -1,21 +1,21 @@
 package com.atom.jobseeker.post.controller;
 
+import com.atom.jobseeker.common.constant.ErrorEnum;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
+import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.CheckVo;
-import com.atom.jobseeker.post.vo.CompanyVo;
-import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author wayan
@@ -23,7 +23,6 @@ import java.util.Objects;
 @Slf4j
 @RestController
 @RequestMapping("/post/job")
-
 public class JobController {
 
     @Resource
@@ -37,61 +36,66 @@ public class JobController {
 
     /**
      * 获取所有数据，带有分页
+     *
      * @param params
      * @return
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = jobService.queryPage(params);
         return R.ok().wrapper("page", page);
     }
 
     /**
      * 通过id查找对应的岗位信息
+     *
      * @param id
      * @return
      */
     @RequestMapping("/{id}")
-    public R getJobInfo(@PathVariable("id") Long id){
-        JobVo jobInfo = jobService.queryJobById(id);
-        CompanyVo companyInfo = companyService.queryCompanyById(jobInfo.getCompanyId());
+    public R getJobInfo(@PathVariable("id") Long id) {
+        Job jobInfo = jobService.queryJobById(id);
+        Company companyInfo = companyService.queryCompanyById(jobInfo.getCompanyId());
         return R.ok().wrapper("jobInfo", jobInfo).wrapper("companyInfo", companyInfo);
     }
 
     /**
-     * 修改状态并保存到ElasticSearch中
+     * 将岗位信息上传到ElasticSearch中，并修改发布状态
+     *
      * @param checkVo
      * @return
      */
     @RequestMapping("/check")
-    public R changeStatusAndPush(@RequestBody CheckVo checkVo){
-        for (Long id : checkVo.getIds()) {
-            String issueStatus = jobService.queryIssueStatus(id);
-            if ("通过".equals(checkVo.getStatus()) && !"通过".equals(issueStatus) ) {
-                JobEs jobEs = jobService.genJobEs(id);
-                elasticJobService.upToElastic(jobEs);
-            }
-            jobService.changeIssueStatus(id, checkVo.getStatus());
+    public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
+        Long[] ids = jobService.filterIds(checkVo);
+        List<JobEs> jobEsList = jobService.genJobEsList(ids);
+        try {
+            elasticJobService.upToElastic(jobEsList);
+            jobService.updateBathIssueStatus(ids, checkVo.getStatus());
+            return R.ok();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error(ErrorEnum.JOB_PUSH_ERROR.getCode(), ErrorEnum.JOB_PUSH_ERROR.getMsg());
         }
-        return R.ok();
     }
 
     /**
-     * 下架岗位信息
+     * 从ElasticSearch中下架岗位信息，并修改发布状态
+     *
      * @param checkVo
      * @return
      */
     @RequestMapping("/offShelf")
-    public R offShelf(@RequestBody CheckVo checkVo){
-        for (Long id : checkVo.getIds()) {
-            String issueStatus = jobService.queryIssueStatus(id);
-            if ("通过".equals(issueStatus)){
-                elasticJobService.downFromElastic(id);
-                jobService.changeIssueStatus(id, "待审核");
-            }
+    public R offShelf(@RequestBody CheckVo checkVo) {
+        Long[] ids = jobService.filterIds(checkVo);
+        try {
+            elasticJobService.downFromElastic(ids);
+            jobService.updateBathIssueStatus(ids, "待审核");
+            return R.ok();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());
         }
-        return R.ok();
     }
-
 
 }

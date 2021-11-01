@@ -2,6 +2,9 @@ package com.atom.jobseeker.post.vo;
 
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author wayan
  */

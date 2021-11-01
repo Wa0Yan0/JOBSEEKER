@@ -2,9 +2,11 @@ package com.atom.jobseeker.post.service;
 
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.pojo.Job;
+import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.search.es.JobEs;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,21 +26,21 @@ public interface JobService {
      * @param id
      * @return
      */
-    JobVo queryJobById(Long id);
+    Job queryJobById(Long id);
 
     /**
      * 修改发布状态
      * @param id
      * @param status
      */
-    void changeIssueStatus(Long id, String status);
+    void updateBathIssueStatus(Long[] id, String status);
 
     /**
      * 生成jobEs模块的实体
-     * @param id
+     * @param ids
      * @return
      */
-    JobEs genJobEs(Long id);
+    List<JobEs> genJobEsList(Long[] ids);
 
     /**
      * 根据id查询岗位状态
@@ -46,4 +48,12 @@ public interface JobService {
      * @return
      */
     String queryIssueStatus(Long id);
+
+
+    /**
+     * 过滤岗位id
+     * @param checkVo
+     * @return
+     */
+    Long[] filterIds(CheckVo checkVo);
 }
