@@ -3,13 +3,14 @@ package com.atom.jobseeker.system.pojo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author wayan
  */
 @Data
-public class Menu {
+public class Menu implements Serializable {
     private int menuId;
     private int parentId;
     private String name;

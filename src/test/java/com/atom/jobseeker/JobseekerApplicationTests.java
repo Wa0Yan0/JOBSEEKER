@@ -91,7 +91,7 @@ class JobseekerApplicationTests {
 
     @Test
     void Menu() {
-
+        System.out.println(menuService.queryMenu());
     }
 
 
