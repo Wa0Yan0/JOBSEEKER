@@ -65,18 +65,28 @@ public class JobController {
      * @param checkVo
      * @return
      */
-    @RequestMapping("/check")
+    @RequestMapping("/up")
     public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
         Long[] ids = jobService.filterIds(checkVo);
-        List<JobEs> jobEsList = jobService.genJobEsList(ids);
         try {
-            elasticJobService.upToElastic(jobEsList);
-            jobService.updateBathIssueStatus(ids, checkVo.getStatus());
-            return R.ok();
+            if (ids.length != 0) {
+                List<JobEs> jobEsList = jobService.genJobEsList(ids);
+                elasticJobService.upToElastic(jobEsList);
+                jobService.updateBathIssueStatus(ids, checkVo.getStatus());
+                return R.ok();
+            }else {
+                return R.error(ErrorEnum.JOB_RE_PUSH_ERROR.getCode(), ErrorEnum.JOB_RE_PUSH_ERROR.getMsg());
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return R.error(ErrorEnum.JOB_PUSH_ERROR.getCode(), ErrorEnum.JOB_PUSH_ERROR.getMsg());
         }
+    }
+
+    @RequestMapping("/fail")
+    public R changeStatus(@RequestBody CheckVo checkVo){
+        jobService.updateBathIssueStatus(checkVo.getIds(), checkVo.getStatus());
+        return R.ok();
     }
 
     /**
@@ -89,9 +99,13 @@ public class JobController {
     public R offShelf(@RequestBody CheckVo checkVo) {
         Long[] ids = jobService.filterIds(checkVo);
         try {
-            elasticJobService.downFromElastic(ids);
-            jobService.updateBathIssueStatus(ids, "待审核");
-            return R.ok();
+            if (ids.length != 0) {
+                elasticJobService.downFromElastic(ids);
+                jobService.updateBathIssueStatus(ids, "待审核");
+                return R.ok();
+            }else {
+                return R.error(ErrorEnum.JOB_RE_DOWN_ERROR.getCode(), ErrorEnum.JOB_RE_DOWN_ERROR.getMsg());
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());

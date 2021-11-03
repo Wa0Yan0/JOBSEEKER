@@ -5,9 +5,26 @@
 
 
 <mapper namespace="com.atom.jobseeker.system.dao.MenuDao">
-
+    <insert id="save">
+        insert into sys_menu(menu_id, parent_id, name, path, type, icon)
+        values (#{menu.menuId}, #{menu.parentId}, #{menu.name}, #{menu.path}, #{menu.type}, #{menu.icon})
+    </insert>
+    <update id="update">
+        update sys_menu set parent_id=#{menu.parentId}, name=#{menu.name}, path=#{menu.path}, type=#{menu.type}, icon=#{menu.icon} where menu_id = #{menu.menuId}
+    </update>
     <select id="selectList" resultType="com.atom.jobseeker.system.pojo.Menu">
-        select * from sys_menu
+        select *
+        from sys_menu
+    </select>
+    <select id="selectParentMenus" resultType="com.atom.jobseeker.system.pojo.Menu">
+        select menu_id, name
+        from sys_menu
+        where parent_id = 0
+    </select>
+    <select id="selectOneById" resultType="com.atom.jobseeker.system.pojo.Menu">
+        select *
+        from sys_menu
+        where menu_id = #{menuId}
     </select>
 </mapper>
 
