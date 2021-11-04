@@ -38,4 +38,8 @@ public class QueryVo {
             this.issueDate = params.get("issueDate").toString().split("T")[0];
         }
     }
+
+    public boolean hasQuery(){
+        return !"".equals(this.query) || !"".equals(this.issueStatus) || !"".equals(this.issueDate) || cityId != 0 || majorId != 0;
+    }
 }

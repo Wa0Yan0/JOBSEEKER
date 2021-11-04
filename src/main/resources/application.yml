@@ -13,7 +13,7 @@ spring:
     redis:
       time-to-live: 3600000 # key的存活时间
       cache-null-values: true #是否缓存空值，解决缓存穿透
-      use-key-prefix: false # 是否使用前缀
+      use-key-prefix: true # 是否使用前缀
 
 mybatis:
   mapper-locations: mapper/*/*.xml

@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -34,15 +33,9 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        AtomicInteger count = new AtomicInteger();
-        params.forEach((key, value) -> {
-            if ("".equals(value)) {
-                count.addAndGet(1);
-            }
-        });
         QueryVo queryVo = new QueryVo(params);
         IPage iPage = new IPage(params);
-        iPage.setTotalCount(count.get() == params.size() - 2 ? jobDao.selectTotalCount() : jobDao.selectCountWithQuery(queryVo));
+        iPage.setTotalCount(queryVo.hasQuery() ? jobDao.selectCountWithQuery(queryVo) : jobDao.selectTotalCount());
         PageUtils pageUtils = new PageUtils(iPage);
         List<Job> jobs = jobDao.selectListWithQuery(queryVo, iPage.getBegin(), iPage.getPageSize());
         pageUtils.setList(jobs);

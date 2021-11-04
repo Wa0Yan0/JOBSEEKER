@@ -3,10 +3,7 @@ package com.atom.jobseeker.system.controller;
 import com.atom.jobseeker.common.utils.R;
 import com.atom.jobseeker.system.pojo.Menu;
 import com.atom.jobseeker.system.service.MenuService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,6 +46,12 @@ public class MenuController {
     @RequestMapping("/update")
     public R update(@RequestBody Menu menu){
         menuService.update(menu);
+        return R.ok();
+    }
+
+    @RequestMapping("/delete/{id}")
+    public R delete(@PathVariable("id") Long id){
+        menuService.delete(id);
         return R.ok();
     }
 }

@@ -40,4 +40,10 @@ public interface MenuService {
      * @param menu
      */
     void update(Menu menu);
+
+    /**
+     * 删除菜单
+     * @param id
+     */
+    void delete(Long id);
 }

@@ -3,6 +3,7 @@ package com.atom.jobseeker.system.service.impl;
 import com.atom.jobseeker.system.dao.MenuDao;
 import com.atom.jobseeker.system.pojo.Menu;
 import com.atom.jobseeker.system.service.MenuService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class MenuServiceImpl implements MenuService {
      * key: #root.methodName,把方法名称作为key的名称
      * @return
      */
-    @Cacheable(value = {"menus"}, key = "#root.methodName")
+    @Cacheable(value = {"menus"}, key = "#root.methodName", sync = true)
     @Override
     public List<Menu> queryMenu() {
         System.out.println("该方法被调用");
@@ -45,14 +46,22 @@ public class MenuServiceImpl implements MenuService {
         return menuDao.selectOneById(menuId);
     }
 
+    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void save(Menu menu) {
         menuDao.save(menu);
     }
 
+    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void update(Menu menu) {
         menuDao.update(menu);
+    }
+
+    @CacheEvict(value = "menus", allEntries = true)
+    @Override
+    public void delete(Long id) {
+        menuDao.delete(id);
     }
 
 

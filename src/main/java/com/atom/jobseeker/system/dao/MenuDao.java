@@ -42,4 +42,10 @@ public interface MenuDao {
      * @param menu
      */
     void update(@Param("menu") Menu menu);
+
+    /**
+     * 删除数据
+     * @param id
+     */
+    void delete(@Param("id") Long id);
 }

@@ -12,6 +12,9 @@
     <update id="update">
         update sys_menu set parent_id=#{menu.parentId}, name=#{menu.name}, path=#{menu.path}, type=#{menu.type}, icon=#{menu.icon} where menu_id = #{menu.menuId}
     </update>
+    <delete id="delete">
+        delete from sys_menu where menu_id=#{id}
+    </delete>
     <select id="selectList" resultType="com.atom.jobseeker.system.pojo.Menu">
         select *
         from sys_menu
