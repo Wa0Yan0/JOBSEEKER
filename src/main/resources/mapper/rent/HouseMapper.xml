@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.atom.jobseeker.rent.dao.HouseDao">
+
+
+    <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">
+        select * from house where h_id=#{hId}
+    </select>
+</mapper>
+
