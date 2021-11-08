@@ -1,6 +1,5 @@
-package com.atom.jobseeker.common.utils;
+package com.atom.jobseeker.rent.utils;
 
-import com.atom.jobseeker.post.vo.QueryVo;
 import lombok.Data;
 
 import java.util.List;

@@ -18,13 +18,31 @@ public class QueryVo {
     private String issueDate;
 
     public QueryVo(Map<String, Object> params) {
+        /**
+         *模糊搜索
+         */
         this.query = "";
+        /**
+         * 发布日期
+         */
         this.issueDate = "";
+        /**
+         * 发布状态
+         */
         this.issueStatus = "";
+        /**
+         * 查询接收信息的所有key
+         */
         List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
+
+
+        /**
+         * 获取到模糊查询的信息
+         */
         if (keys.contains("query")){
             this.query = (String) params.get("query");
         }
+
         if (keys.contains("cityId")) {
             this.cityId = "".equals(params.get("cityId").toString()) ? 0 : Integer.parseInt(params.get("cityId").toString());
         }

@@ -13,11 +13,7 @@ public class Community {
     private String cmyRegion;
     private String cmyLocation;
     private String cmyStyle;
-    private String cmyResidents;
-    private String cmyProperty;
     private String cmyYear;
-    private String cmyGreen;
-    private String cmyPark;
     private String cmyCost;
     private String cmyPmc;
 }

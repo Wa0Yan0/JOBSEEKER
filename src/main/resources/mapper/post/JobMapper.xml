@@ -50,6 +50,7 @@
             #{id}
         </foreach>
     </select>
+
     <select id="selectCountWithQuery" resultType="java.lang.Long">
         select count(*) from job where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
         <if test="queryInfo.cityId != 0">

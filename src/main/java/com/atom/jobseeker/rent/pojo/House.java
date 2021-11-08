@@ -20,4 +20,8 @@ public class House {
     private String hIntro;
     private String hImgUrl;
     private String hFacility;
+    private String hPay;
+    private String hRequires;
+    private String hStatus;
+    private Long cId;
 }

@@ -10,5 +10,53 @@
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">
         select * from house where h_id=#{hId}
     </select>
+
+    <select id="selectTotalCount" resultType="java.lang.Integer">
+        select count(*) from house
+    </select>
+
+    <select id="selectTotalCountWithQuery" resultType="java.lang.Integer">
+        select count(*) from house
+        <where>
+            <if test="queryVo.query!=''">
+                h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
+            </if>
+            <if test="queryVo.cityId!=0">
+                and c_id=#{queryVo.cityId}
+            </if>
+            <if test="queryVo.regionId!=0">
+                and r_id=#{queryVo.regionId}
+            </if>
+            <if test="queryVo.houseStatus!=''">
+                and h_status=#{queryVo.houseStatus}
+            </if>
+            <if test="queryVo.endPrice!=0.0">
+                and h_money between #{queryVo.startPrice} and #{queryVo.endPrice}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectListWithQuery" resultType="com.atom.jobseeker.rent.pojo.House">
+        select * from house
+        <where>
+            <if test="queryVo.query!=''">
+                h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
+            </if>
+            <if test="queryVo.cityId!=0">
+                and c_id=#{queryVo.cityId}
+            </if>
+            <if test="queryVo.regionId!=0">
+                and r_id=#{queryVo.regionId}
+            </if>
+            <if test="queryVo.houseStatus!=''">
+                and h_status=#{queryVo.houseStatus}
+            </if>
+            <if test="queryVo.endPrice!=0.0">
+                and h_money between #{queryVo.startPrice} and #{queryVo.endPrice}
+            </if>
+        </where>
+        limit #{begin},#{pagesize}
+    </select>
+
 </mapper>
 
