@@ -2,8 +2,11 @@ package com.atom.jobseeker.post.dao;
 
 
 import com.atom.jobseeker.post.pojo.Company;
+import com.atom.jobseeker.post.vo.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author wayan
@@ -19,9 +22,24 @@ public interface CompanyDao {
     Company selectOneById(@Param("id") Long id);
 
     /**
-     * 通过id查找公司名称
-     * @param id
+     * 查询带有查询条件的总记录数
+     * @param queryInfo
      * @return
      */
-    String selectNameById(@Param("id") Long id);
+    long selectCountWithQuery(@Param("queryInfo") QueryVo queryInfo);
+
+    /**
+     * 查询总记录数
+     * @return
+     */
+    long selectTotalCount();
+
+    /**
+     * 查询带有查询条件的记录
+     * @param queryInfo
+     * @param begin
+     * @param pageSize
+     * @return
+     */
+    List<Company> selectListWithQuery(@Param("queryInfo") QueryVo queryInfo, @Param("begin") int begin, @Param("pageSize") int pageSize);
 }

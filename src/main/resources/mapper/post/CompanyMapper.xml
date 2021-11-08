@@ -8,14 +8,42 @@
     <select id="selectOneById" resultType="company">
         select * from company where id = #{id}
     </select>
-    <select id="selectListWithLimit" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job limit #{begin}, #{pageSize}
+    <select id="selectTotalCount" resultType="java.lang.Long">
+        select count(*) from company
     </select>
-    <select id="selectTotalCount" resultType="java.lang.Integer">
-        select count(*) from job
+    <select id="selectCountWithQuery" resultType="java.lang.Long">
+        select count(*) from company where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+        <if test="queryInfo.cityId != 0">
+            and city_id = #{queryInfo.cityId}
+        </if>
+        <if test="queryInfo.majorId != 0">
+            and major_id = #{queryInfo.majorId}
+        </if>
+        <if test="queryInfo.issueStatus != ''">
+            and issue_status = #{queryInfo.issueStatus}
+        </if>
+        <if test="queryInfo.issueDate != ''">
+            and issue_date like #{queryInfo.issueDate}"%"
+        </if>
     </select>
-    <select id="selectNameById" resultType="java.lang.String">
-        select name from company where id = #{id}
+    <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Company">
+        select * from company where 1=1
+        <if test="queryInfo.query != ''">
+            and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+        </if>
+        <if test="queryInfo.cityId != 0">
+            and city_id = #{queryInfo.cityId}
+        </if>
+        <if test="queryInfo.majorId != 0">
+            and major_id = #{queryInfo.majorId}
+        </if>
+        <if test="queryInfo.issueStatus != ''">
+            and issue_status = #{queryInfo.issueStatus}
+        </if>
+        <if test="queryInfo.issueDate != ''">
+            and issue_date like #{queryInfo.issueDate}"%"
+        </if>
+        limit #{begin}, #{pageSize}
     </select>
 
 </mapper>
