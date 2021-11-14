@@ -20,7 +20,6 @@ public class QueryVo {
     public QueryVo(Map<String, Object> params) {
         this.query = "";
         this.issueDate = "";
-        this.issueStatus = "";
         List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
         if (keys.contains("query")){
             this.query = (String) params.get("query");
