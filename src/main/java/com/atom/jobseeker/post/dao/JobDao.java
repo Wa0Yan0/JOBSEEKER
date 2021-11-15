@@ -38,7 +38,7 @@ public interface JobDao {
     int selectTotalCount();
 
     /**
-     *  跟新发布状态
+     *  批量跟新发布状态
      * @param ids
      * @param status
      */

@@ -17,23 +17,25 @@
         where id = #{id}
     </select>
     <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job where 1=1
-        <if test="queryInfo.query != ''">
-            and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
-        </if>
-        <if test="queryInfo.cityId != 0">
-            and city_id = #{queryInfo.cityId}
-        </if>
-        <if test="queryInfo.majorId != 0">
-            and major_id = #{queryInfo.majorId}
-        </if>
-        <if test="queryInfo.issueStatus != ''">
-            and issue_status = #{queryInfo.issueStatus}
-        </if>
-        <if test="queryInfo.issueDate != ''">
-            and issue_date like #{queryInfo.issueDate}"%"
-        </if>
-        limit #{begin}, #{pageSize}
+        select * from job
+        <where>
+            <if test="queryInfo.query != ''">
+                and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+            </if>
+            <if test="queryInfo.cityId != 0">
+                and city_id = #{queryInfo.cityId}
+            </if>
+            <if test="queryInfo.majorId != 0">
+                and major_id = #{queryInfo.majorId}
+            </if>
+            <if test="queryInfo.issueStatus != ''">
+                and issue_status = #{queryInfo.issueStatus}
+            </if>
+            <if test="queryInfo.issueDate != ''">
+                and issue_date like #{queryInfo.issueDate}"%"
+            </if>
+        </where>
+        order by issue_date desc limit #{begin}, #{pageSize}
     </select>
     <select id="selectTotalCount" resultType="java.lang.Integer">
         select count(*)
