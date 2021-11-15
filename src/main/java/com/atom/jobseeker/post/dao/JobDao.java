@@ -64,4 +64,19 @@ public interface JobDao {
      * @return
      */
     long selectCountWithQuery(@Param("queryInfo") QueryVo queryInfo);
+
+
+    /**
+     * 查询公司id对应的所有岗位信息
+     * @param id
+     * @return
+     */
+    List<Job> selectListByCompanyId(@Param("id") Long id);
+
+    /**
+     * 插入一条数据
+     * @param job
+     */
+    void insert(@Param("job") Job job);
+
 }

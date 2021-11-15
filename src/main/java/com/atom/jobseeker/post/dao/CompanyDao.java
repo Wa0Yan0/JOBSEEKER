@@ -42,4 +42,23 @@ public interface CompanyDao {
      * @return
      */
     List<Company> selectListWithQuery(@Param("queryInfo") QueryVo queryInfo, @Param("begin") int begin, @Param("pageSize") int pageSize);
+
+    /**
+     * 插入表数据
+     * @param company
+     * @return
+     */
+    Long insert(@Param("company") Company company);
+
+    /**
+     * 跟新表数据
+     * @param company
+     */
+    void update(@Param("company") Company company);
+
+    /**
+     * 查询所有数据
+     * @return
+     */
+    List<Company> selectList();
 }

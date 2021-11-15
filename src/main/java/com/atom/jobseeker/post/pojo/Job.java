@@ -22,7 +22,6 @@ public class Job {
     private String issueDate;
     private String issueStatus;
     private String jobInfo;
-    private Integer showStatus;
     private Long companyId;
     private Integer cityId;
     private Integer majorId;

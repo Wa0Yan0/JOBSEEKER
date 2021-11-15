@@ -5,46 +5,57 @@
 
 
 <mapper namespace="com.atom.jobseeker.post.dao.CompanyDao">
+    <update id="update">
+
+    </update>
     <select id="selectOneById" resultType="company">
         select * from company where id = #{id}
     </select>
     <select id="selectTotalCount" resultType="java.lang.Long">
         select count(*) from company
     </select>
+
     <select id="selectCountWithQuery" resultType="java.lang.Long">
-        select count(*) from company where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
-        <if test="queryInfo.cityId != 0">
-            and city_id = #{queryInfo.cityId}
-        </if>
-        <if test="queryInfo.majorId != 0">
-            and major_id = #{queryInfo.majorId}
-        </if>
-        <if test="queryInfo.issueStatus != ''">
-            and issue_status = #{queryInfo.issueStatus}
-        </if>
-        <if test="queryInfo.issueDate != ''">
-            and issue_date like #{queryInfo.issueDate}"%"
-        </if>
+        select count(*) from company
+        <where>
+            <if test="queryInfo.query != ''">
+                and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+            </if>
+            <if test="queryInfo.cityId != 0">
+                and city_id = #{queryInfo.cityId}
+            </if>
+            <if test="queryInfo.issueDate != ''">
+                and issue_date like #{queryInfo.issueDate}"%"
+            </if>
+        </where>
     </select>
+
     <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Company">
-        select * from company where 1=1
-        <if test="queryInfo.query != ''">
-            and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
-        </if>
-        <if test="queryInfo.cityId != 0">
-            and city_id = #{queryInfo.cityId}
-        </if>
-        <if test="queryInfo.majorId != 0">
-            and major_id = #{queryInfo.majorId}
-        </if>
-        <if test="queryInfo.issueStatus != ''">
-            and issue_status = #{queryInfo.issueStatus}
-        </if>
-        <if test="queryInfo.issueDate != ''">
-            and issue_date like #{queryInfo.issueDate}"%"
-        </if>
+        select * from company
+        <where>
+            <if test="queryInfo.query != ''">
+                and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+            </if>
+            <if test="queryInfo.cityId != 0">
+                and city_id = #{queryInfo.cityId}
+            </if>
+            <if test="queryInfo.issueDate != ''">
+                and issue_date like #{queryInfo.issueDate}"%"
+            </if>
+        </where>
         limit #{begin}, #{pageSize}
     </select>
+    <select id="selectList" resultType="com.atom.jobseeker.post.pojo.Company">
+        select * from company
+    </select>
+
+    <insert id="insert">
+        <selectKey resultType="long" keyProperty="id">
+            select @@IDENTITY
+        </selectKey>
+        insert into pos_company(name, type, size, field, address, introduce, img, city_id)
+        values(#{company.name}, #{company.type},#{company.size}, #{company.field}, #{company.address}, #{company.introduce}, #{company.img}, #{company.cityId})
+    </insert>
 
 </mapper>
 
