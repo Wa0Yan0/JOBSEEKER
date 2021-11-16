@@ -4,12 +4,14 @@ import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.rent.dao.CommunityDao;
+import com.atom.jobseeker.rent.pojo.Community;
 import com.atom.jobseeker.rent.utils.IPage;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.rent.vo.QueryVo;
 import com.atom.jobseeker.rent.dao.HouseDao;
 import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.HouseService;
+import com.atom.jobseeker.search.es.HouseEs;
 import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 public class HouseServiceImpl implements HouseService {
     @Autowired
     private HouseDao houseDao;
+    @Autowired
+    private CommunityDao communityDao;
 
     /**
      * 根据单个ID搜索到对应的租房信息
@@ -85,16 +89,19 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public List<JobEs> genJobEsList(Long[] ids) {
+    public List<HouseEs> genHouseEsList(Long[] ids) {
         //根据当前通过id获取house体信息
-        List<House> jobList = houseDao.selectHouseList(ids);
-        return jobList.stream().map(job -> {
-            Company company = CommunityDao(job.getCompanyId());
-            JobEs jobEs = new JobEs(job, company);
-            jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
-            return jobEs;
+        List<House> houseList = houseDao.selectHouseList(ids);
+        return houseList.stream().map(house -> {
+            Community community = communityDao.selectOneById(house.getCmyId());
+            HouseEs houseEs = new HouseEs(house, community);
+            houseEs.setHStyle(house.getHStyle().replaceAll("\\u00A0"," ").split(" +")[0]);
+            return houseEs;
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public void updateBathIssueStatus(Long[] id, String status) {
 
+    }
 }

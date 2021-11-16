@@ -54,4 +54,5 @@ public interface HouseDao {
      * @return
      */
     List<House> selectHouseList(@Param("ids") Long[] ids);
+
 }
