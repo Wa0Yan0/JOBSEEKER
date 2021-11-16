@@ -1,15 +1,17 @@
 package com.atom.jobseeker.rent.service;
 
+import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.rent.pojo.House;
+import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author SunLei
  */
-@Service
 public interface HouseService {
     /**
      * 根据单个ID搜索到对应的租房信息
@@ -24,4 +26,13 @@ public interface HouseService {
      * @return 返回分页好的实例对象，对象包含House实例对象列表
      */
     PageUtils queryHousesInforWithPage(Map<String, Object> params);
+
+    /**
+     * 过滤更改状态请求中的id进行上线或下线
+     * @param checkVo
+     * @return  返回需要更改状态的id集合
+     */
+    Long[] filterIds(CheckVo checkVo);
+
+    List<JobEs> genJobEsList(Long[] ids);
 }

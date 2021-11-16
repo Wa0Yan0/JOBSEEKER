@@ -30,7 +30,7 @@ public interface HouseDao {
      * @param queryVo
      * @return  高级查询后的总记录数
      */
-     int selectTotalCountWithQuery(QueryVo queryVo);
+     int selectTotalCountWithQuery(@Param("queryVo") QueryVo queryVo);
 
     /**
      * 根据高级查询搜索对应的信息列表
@@ -39,5 +39,19 @@ public interface HouseDao {
      * @param pageSize
      * @return  通过高级搜索到的对应的信息列表
      */
-    List<House> selectListWithQuery(QueryVo queryVo,int begin,int pageSize);
+    List<House> selectListWithQuery(@Param("queryVo")QueryVo queryVo,@Param("begin") int begin,@Param("pagesize") int pageSize);
+
+    /**
+     * 根据id查询当前房屋信息的发布状态
+     * @param hId
+     * @return
+     */
+    String selectStatus(@Param("hId") Long hId);
+
+    /**
+     * 根据id集合获取到对应的租房信息集合
+     * @param ids
+     * @return
+     */
+    List<House> selectHouseList(@Param("ids") Long[] ids);
 }

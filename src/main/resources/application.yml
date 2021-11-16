@@ -21,6 +21,7 @@ mybatis:
     map-underscore-to-camel-case: true
   type-aliases-package: com.atom.jobseeker.post.pojo
 
+
 logging:
   level:
     com.atom.jobseeker: debug

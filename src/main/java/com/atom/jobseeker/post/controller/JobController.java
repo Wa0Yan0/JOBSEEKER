@@ -68,6 +68,7 @@ public class JobController {
     @RequestMapping("/up")
     public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
         Long[] ids = jobService.filterIds(checkVo);
+
         try {
             if (ids.length != 0) {
                 List<JobEs> jobEsList = jobService.genJobEsList(ids);
@@ -81,6 +82,8 @@ public class JobController {
             e.printStackTrace();
             return R.error(ErrorEnum.JOB_PUSH_ERROR.getCode(), ErrorEnum.JOB_PUSH_ERROR.getMsg());
         }
+
+
     }
 
     @RequestMapping("/fail")

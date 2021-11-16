@@ -1,16 +1,25 @@
 package com.atom.jobseeker.rent.service.impl;
 
+import com.atom.jobseeker.post.pojo.Company;
+import com.atom.jobseeker.post.pojo.Job;
+import com.atom.jobseeker.post.vo.CheckVo;
+import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.utils.IPage;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.rent.vo.QueryVo;
 import com.atom.jobseeker.rent.dao.HouseDao;
 import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.HouseService;
+import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+@Service
 public class HouseServiceImpl implements HouseService {
     @Autowired
     private HouseDao houseDao;
@@ -47,5 +56,45 @@ public class HouseServiceImpl implements HouseService {
         pageUtils.setList(houses);
         return pageUtils;
     }
+
+    @Override
+    public Long[] filterIds(CheckVo checkVo) {
+        //初始化当前id列表
+        ArrayList<Long> ids = new ArrayList<>();
+        //遍历参数中id
+        for (Long id : checkVo.getIds()) {
+            //elasticsearch上线分支
+            if (checkVo.getStatus() != null) {
+                if ("通过".equals(checkVo.getStatus())) {
+                    String issueStatus = houseDao.selectStatus(id);
+                    //防止通过的数据重复更新，过滤已经通过的
+                    if (!"通过".equals(issueStatus)) {
+                        ids.add(id);
+                    }
+                }
+            }
+            //elasticsearch下线分支
+            else {
+                String issueStatus = houseDao.selectStatus(id);
+                if ("通过".equals(issueStatus)) {
+                    ids.add(id);
+                }
+            }
+        }
+        return ids.toArray(new Long[0]);
+    }
+
+    @Override
+    public List<JobEs> genJobEsList(Long[] ids) {
+        //根据当前通过id获取house体信息
+        List<House> jobList = houseDao.selectHouseList(ids);
+        return jobList.stream().map(job -> {
+            Company company = CommunityDao(job.getCompanyId());
+            JobEs jobEs = new JobEs(job, company);
+            jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
+            return jobEs;
+        }).collect(Collectors.toList());
+    }
+
 
 }

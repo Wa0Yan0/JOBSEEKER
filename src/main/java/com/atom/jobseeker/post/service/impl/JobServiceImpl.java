@@ -54,6 +54,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobEs> genJobEsList(Long[] ids) {
+        //根据当前通过id获取job体信息
         List<Job> jobList = jobDao.selectListById(ids);
         return jobList.stream().map(job -> {
             Company company = companyDao.selectOneById(job.getCompanyId());
@@ -79,7 +80,8 @@ public class JobServiceImpl implements JobService {
                         ids.add(id);
                     }
                 }
-            } else {
+            }
+            else {
                 String issueStatus = jobDao.selectIssueStatus(id);
                 if ("通过".equals(issueStatus)) {
                     ids.add(id);

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author wayan
+ * @author sunlei
  */
 @Data
 public class QueryVo {
@@ -77,5 +77,17 @@ public class QueryVo {
      */
     public boolean hasQuery(){
         return !"".equals(this.query) || !"".equals(this.houseStatus) ||  cityId != 0 || regionId != 0  || startPrice!=0.0F || endPrice!=0.0F;
+    }
+
+    @Override
+    public String toString() {
+        return "QueryVo{" +
+                "query='" + query + '\'' +
+                ", cityId=" + cityId +
+                ", regionId=" + regionId +
+                ", startPrice=" + startPrice +
+                ", endPrice=" + endPrice +
+                ", houseStatus='" + houseStatus + '\'' +
+                '}';
     }
 }
