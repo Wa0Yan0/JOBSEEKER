@@ -72,7 +72,7 @@
         </if>
     </select>
     <select id="selectListByCompanyId" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job where companyId = #{id}
+        select * from job where company_id = #{id}
     </select>
 
 

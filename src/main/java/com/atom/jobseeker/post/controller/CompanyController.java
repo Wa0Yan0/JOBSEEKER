@@ -48,5 +48,4 @@ public class CompanyController {
         companyService.generateTable();
         return R.ok();
     }
-
 }

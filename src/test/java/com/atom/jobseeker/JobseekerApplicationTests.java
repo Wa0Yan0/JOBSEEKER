@@ -3,7 +3,10 @@ package com.atom.jobseeker;
 import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.attr.dao.AttrDao;
 import com.atom.jobseeker.attr.pojo.Major;
+import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
+import com.atom.jobseeker.post.pojo.Company;
+import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.search.config.ElasticSearchConfig;
 import com.atom.jobseeker.search.constant.EsConstant;
@@ -43,6 +46,9 @@ class JobseekerApplicationTests {
 
     @Resource
     private MenuService menuService;
+
+    @Resource
+    private CompanyDao companyDao;
 
     @Test
     void contextLoads() {
@@ -92,6 +98,21 @@ class JobseekerApplicationTests {
     @Test
     void Menu() {
         System.out.println(menuService.queryMenu());
+    }
+
+    @Test
+    void insert(){
+        Company company = companyDao.selectOneById(100614L);
+        Long companyId = companyDao.insert(company);
+        System.out.println(companyId);
+        List<Job> jobList = jobDao.selectListByCompanyId(company.getId());
+        if (jobList != null) {
+            jobList.forEach(job -> {
+                job.setCompanyId(companyId);
+                System.out.println(job);
+                jobDao.insert(job);
+            });
+        }
     }
 
 

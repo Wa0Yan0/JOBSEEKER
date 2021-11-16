@@ -9,11 +9,9 @@ import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.vo.QueryVo;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -59,7 +57,6 @@ public class CompanyServiceImpl implements CompanyService {
         List<Company> companyList = companyDao.selectList();
         companyList.forEach(company -> {
             Long companyId = companyDao.insert(company);
-            System.out.println(companyId);
             List<Job> jobList = jobDao.selectListByCompanyId(company.getId());
             if (jobList != null) {
                 jobList.forEach(job -> {
