@@ -15,6 +15,14 @@
             #{id}
         </foreach>
     </update>
+
+    <delete id="batchDeleteByCompanyId">
+        delete from pos_job where company_id in
+        <foreach collection="companyIds" item="companyId" open="(" close=")" separator=",">
+            #{companyId}
+        </foreach>
+    </delete>
+
     <select id="selectOneById" resultType="Job">
         select *
         from job

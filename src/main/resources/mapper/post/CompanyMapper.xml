@@ -5,7 +5,12 @@
 
 
 <mapper namespace="com.atom.jobseeker.post.dao.CompanyDao">
-
+    <delete id="batchDelete">
+        delete from pos_company where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <select id="selectOneById" resultType="company">
         select * from pos_company where id = #{id}
