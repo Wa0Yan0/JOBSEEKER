@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class Company {
-    private Integer id;
+    private Long id;
     private String name;
     private String type;
     private String size;
@@ -17,7 +17,5 @@ public class Company {
     private String address;
     private String introduce;
     private String img;
-    private Integer showStatus;
     private Integer cityId;
-    private Integer majorId;
 }

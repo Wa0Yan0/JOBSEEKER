@@ -27,4 +27,10 @@ public class AttrController {
         List<Major> majors = attrService.queryMajorList();
         return R.ok().wrapper("cityList", cities).wrapper("majorList", majors);
     }
+
+    @RequestMapping("/cities")
+    public R cityList() {
+        List<City> cities = attrService.queryCityList();
+        return R.ok().wrapper("cityList", cities);
+    }
 }

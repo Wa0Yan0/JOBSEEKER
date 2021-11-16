@@ -26,6 +26,20 @@ public interface CompanyService {
      */
     Company queryCompanyById(Long id);
 
+    /**
+     * 新增公司信息
+     * @param company
+     */
+    void save(Company company);
 
+    /**
+     * 修改公司信息
+     * @param company
+     */
+    void update(Company company);
 
+    /**
+     * 生成符合要求的数据库表
+     */
+    void generateTable();
 }

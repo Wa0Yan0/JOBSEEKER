@@ -5,6 +5,10 @@
 
 
 <mapper namespace="com.atom.jobseeker.post.dao.JobDao">
+    <insert id="insert">
+        insert into pos_job(name, salary, welfare, area, experience, education, people_count, issue_date, issue_status, job_info, company_id, city_id, major_id)
+        values (#{job.name},#{job.salary},#{job.welfare},#{job.area},#{job.experience},#{job.education},#{job.peopleCount},#{job.issueDate},#{job.issueStatus},#{job.jobInfo},#{job.companyId},#{job.cityId},#{job.majorId})
+    </insert>
     <update id="updateBathIssueStatus">
         update job set issue_status = #{status} where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
@@ -68,6 +72,10 @@
             and issue_date like #{queryInfo.issueDate}"%"
         </if>
     </select>
+    <select id="selectListByCompanyId" resultType="com.atom.jobseeker.post.pojo.Job">
+        select * from job where company_id = #{id}
+    </select>
+
 
 </mapper>
 
