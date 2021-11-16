@@ -61,4 +61,10 @@ public interface CompanyDao {
      * @return
      */
     List<Company> selectList();
+
+    /**
+     * 批量删除数据
+     * @param ids
+     */
+    void batchDelete(@Param("ids") Long[] ids);
 }

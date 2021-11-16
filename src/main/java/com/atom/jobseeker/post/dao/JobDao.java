@@ -79,4 +79,9 @@ public interface JobDao {
      */
     void insert(@Param("job") Job job);
 
+    /**
+     * 通过companyId批量删除岗位信息
+     * @param companyIds
+     */
+    void batchDeleteByCompanyId(@Param("companyIds") Long[] companyIds);
 }

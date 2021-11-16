@@ -7,6 +7,8 @@ import com.atom.jobseeker.post.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -40,6 +42,12 @@ public class CompanyController {
     @RequestMapping("/update")
     public R update(@RequestBody Company company){
         companyService.update(company);
+        return R.ok();
+    }
+
+    @RequestMapping("/delete")
+    public R delete(@RequestBody Long[] ids){
+        companyService.batchDelete(ids);
         return R.ok();
     }
 

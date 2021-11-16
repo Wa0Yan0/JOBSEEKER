@@ -9,6 +9,8 @@ import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.vo.QueryVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +67,12 @@ public class CompanyServiceImpl implements CompanyService {
                 });
             }
         });
+    }
+
+    @Override
+    public void batchDelete(Long[] ids) {
+        jobDao.batchDeleteByCompanyId(ids);
+        companyDao.batchDelete(ids);
     }
 
 }
