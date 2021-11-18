@@ -26,12 +26,6 @@
             <if test="queryInfo.query != ''">
                 and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
             </if>
-            <if test="queryInfo.cityId != 0">
-                and city_id = #{queryInfo.cityId}
-            </if>
-            <if test="queryInfo.issueDate != ''">
-                and issue_date like #{queryInfo.issueDate}"%"
-            </if>
         </where>
     </select>
 
@@ -41,15 +35,10 @@
             <if test="queryInfo.query != ''">
                 and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
             </if>
-            <if test="queryInfo.cityId != 0">
-                and city_id = #{queryInfo.cityId}
-            </if>
-            <if test="queryInfo.issueDate != ''">
-                and issue_date like #{queryInfo.issueDate}"%"
-            </if>
         </where>
         order by id desc limit #{begin}, #{pageSize}
     </select>
+
     <select id="selectList" resultType="com.atom.jobseeker.post.pojo.Company">
         select * from pos_company
     </select>
