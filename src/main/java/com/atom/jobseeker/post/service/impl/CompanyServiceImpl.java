@@ -55,21 +55,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void generateTable() {
-        List<Company> companyList = companyDao.selectList();
-        companyList.forEach(company -> {
-            Long companyId = companyDao.insert(company);
-            List<Job> jobList = jobDao.selectListByCompanyId(company.getId());
-            if (jobList != null) {
-                jobList.forEach(job -> {
-                    job.setCompanyId(companyId);
-                    jobDao.insert(job);
-                });
-            }
-        });
-    }
-
-    @Override
     public void batchDelete(Long[] ids) {
         jobDao.batchDeleteByCompanyId(ids);
         companyDao.batchDelete(ids);

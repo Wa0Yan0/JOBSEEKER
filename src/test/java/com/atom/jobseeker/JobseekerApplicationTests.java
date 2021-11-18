@@ -2,6 +2,7 @@ package com.atom.jobseeker;
 
 import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.attr.dao.AttrDao;
+import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.attr.pojo.Major;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
@@ -113,6 +114,13 @@ class JobseekerApplicationTests {
                 jobDao.insert(job);
             });
         }
+    }
+
+    @Test
+    void insertReturn(){
+        City city = new City();
+        city.setName("南京");
+        System.out.println(city.getId());
     }
 
 

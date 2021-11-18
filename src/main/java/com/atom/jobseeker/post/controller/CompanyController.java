@@ -50,10 +50,4 @@ public class CompanyController {
         companyService.batchDelete(ids);
         return R.ok();
     }
-
-    @RequestMapping("/generate/table")
-    public R generator(){
-        companyService.generateTable();
-        return R.ok();
-    }
 }

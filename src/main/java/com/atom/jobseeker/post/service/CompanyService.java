@@ -39,11 +39,6 @@ public interface CompanyService {
     void update(Company company);
 
     /**
-     * 生成符合要求的数据库表
-     */
-    void generateTable();
-
-    /**
      * 批量删除公司数据
      * @param ids
      */

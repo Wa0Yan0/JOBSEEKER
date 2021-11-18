@@ -9,8 +9,9 @@
         insert into pos_job(name, salary, welfare, area, experience, education, people_count, issue_date, issue_status, job_info, company_id, city_id, major_id)
         values (#{job.name},#{job.salary},#{job.welfare},#{job.area},#{job.experience},#{job.education},#{job.peopleCount},#{job.issueDate},#{job.issueStatus},#{job.jobInfo},#{job.companyId},#{job.cityId},#{job.majorId})
     </insert>
+
     <update id="updateBathIssueStatus">
-        update job set issue_status = #{status} where id in
+        update pos_job set issue_status = #{status} where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -25,11 +26,11 @@
 
     <select id="selectOneById" resultType="Job">
         select *
-        from job
+        from pos_job
         where id = #{id}
     </select>
     <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job
+        select * from pos_job
         <where>
             <if test="queryInfo.query != ''">
                 and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
@@ -51,22 +52,22 @@
     </select>
     <select id="selectTotalCount" resultType="java.lang.Integer">
         select count(*)
-        from job
+        from pos_job
     </select>
     <select id="selectIssueStatus" resultType="java.lang.String">
         select issue_status
-        from job
+        from pos_job
         where id = #{id}
     </select>
     <select id="selectListById" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job where id in
+        select * from pos_job where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
 
     <select id="selectCountWithQuery" resultType="java.lang.Long">
-        select count(*) from job where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+        select count(*) from pos_job where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
         <if test="queryInfo.cityId != 0">
             and city_id = #{queryInfo.cityId}
         </if>
@@ -81,7 +82,7 @@
         </if>
     </select>
     <select id="selectListByCompanyId" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from job where company_id = #{id}
+        select * from pos_job where company_id = #{id}
     </select>
 
 
