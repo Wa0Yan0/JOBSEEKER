@@ -5,6 +5,9 @@
 
 
 <mapper namespace="com.atom.jobseeker.rent.dao.HouseDao">
+    <update id="updateCmyId">
+        update house set cmy_id=#{idTwo} where cmy_id=#{idOne}
+    </update>
 
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">

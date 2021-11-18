@@ -48,4 +48,12 @@ public interface HouseService {
      * @param status
      */
     void updateBathIssueStatus(Long[] id, String status);
+
+    /**
+     * 将指定cmy_id修改成指定的数值
+     * @param oldId
+     * @param newId
+     * @return
+     */
+    int updateCmyId(Long oldId,Long newId);
 }

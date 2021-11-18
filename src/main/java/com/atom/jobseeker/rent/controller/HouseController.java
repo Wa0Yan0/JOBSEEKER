@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author SunLei
@@ -77,28 +79,24 @@ public class HouseController {
             e.printStackTrace();
             return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
         }
-
-
     }
 
     /**
-     *test
+     * 将小区重复的信息进行删除并修改对应的租房表
+     * @return
      */
-
-    @RequestMapping("/test")
-    public void testController(){
-        House house = houseService.queryHouseById(25L);
-        String hStyle = house.getHStyle().replaceAll("\\u00A0"," ");
-        String[] split = hStyle.split(" +");
-        for (String s : split) {
-            System.out.println(s);
-        }
-
+    @RequestMapping("/duplrem")
+    public R duplicateRemoval(){
+        List<String> duplCmy = communityService.getDuplCmy();
+        duplCmy.forEach(ids->{
+            String[] id = ids.split(",");
+            List<Long> newId = Arrays.stream(id).map(Long::parseLong).collect(Collectors.toList());
+            for (int i = 0; i < newId.size()-1; i++) {
+                houseService.updateCmyId(newId.get(i),newId.get(newId.size()-1));
+            }
+            newId.remove(newId.size()-1);
+            communityService.delDuplCmy(newId);
+        });
+        return R.ok();
     }
-
-
-
-
-
-
 }

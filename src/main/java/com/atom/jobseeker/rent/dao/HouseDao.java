@@ -55,4 +55,11 @@ public interface HouseDao {
      */
     List<House> selectHouseList(@Param("ids") Long[] ids);
 
+    /**
+     * 将指定的cmy_id修改成指定的值
+     * @param idOne 原cmy_id的值
+     * @param idTwo 指定修改的cmy_id的值
+     * @return
+     */
+    int updateCmyId(@Param("idOne") Long idOne,@Param("idTwo") Long idTwo);
 }
