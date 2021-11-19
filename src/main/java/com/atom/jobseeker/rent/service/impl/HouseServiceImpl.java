@@ -104,4 +104,10 @@ public class HouseServiceImpl implements HouseService {
     public void updateBathIssueStatus(Long[] id, String status) {
 
     }
+
+    @Override
+    public int updateCmyId(Long oldId, Long newId) {
+        return houseDao.updateCmyId(oldId, newId);
+    }
+
 }

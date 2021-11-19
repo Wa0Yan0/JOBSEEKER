@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author SunLei
@@ -77,28 +79,7 @@ public class HouseController {
             e.printStackTrace();
             return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
         }
-
-
     }
-
-    /**
-     *test
-     */
-
-    @RequestMapping("/test")
-    public void testController(){
-        House house = houseService.queryHouseById(25L);
-        String hStyle = house.getHStyle().replaceAll("\\u00A0"," ");
-        String[] split = hStyle.split(" +");
-        for (String s : split) {
-            System.out.println(s);
-        }
-
-    }
-
-
-
-
 
 
 }

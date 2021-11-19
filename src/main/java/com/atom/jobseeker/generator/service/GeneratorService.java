@@ -1,8 +1,10 @@
 package com.atom.jobseeker.generator.service;
 
 
+import java.util.List;
+
 /**
- * @author wayan
+ * @author wayan,sunlei
  */
 public interface GeneratorService {
 
@@ -15,4 +17,36 @@ public interface GeneratorService {
      * 对major、city和location表进行处理,并存储到attr_region
      */
     void genAttr();
+
+
+    /**
+     * 将house和community表的数据进行处理，使community与house形成一对多的关系
+     * @return
+     */
+    int dupCmyHandle();
+
+    /**
+     * 将处理后临时表house内的数据推送到正式表rent_house中
+     * @return
+     */
+    int postHouseNewData();
+
+    /**
+     * 将处理后临时表community内的数据推送到正式表rent_community中
+     * @return
+     */
+    int postCmyNewData();
+
+    /**
+     * 清空house临时表
+     * @return
+     */
+    int delHouse();
+
+    /**
+     * 清空community临时表
+     * @return
+     */
+    int delCmy();
+
 }
