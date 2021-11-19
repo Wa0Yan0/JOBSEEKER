@@ -5,11 +5,17 @@
 
 
 <mapper namespace="com.atom.jobseeker.rent.dao.CommunityDao">
+    <insert id="postCmyNewData">
+        insert into rent_community select * from community
+    </insert>
     <delete id="delDupl" parameterType="list">
         delete from community where cmy_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </delete>
+    <delete id="delCmy">
+        delete from community
     </delete>
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.Community">

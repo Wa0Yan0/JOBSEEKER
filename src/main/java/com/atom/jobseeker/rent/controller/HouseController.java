@@ -81,22 +81,5 @@ public class HouseController {
         }
     }
 
-    /**
-     * 将小区重复的信息进行删除并修改对应的租房表
-     * @return
-     */
-    @RequestMapping("/duplrem")
-    public R duplicateRemoval(){
-        List<String> duplCmy = communityService.getDuplCmy();
-        duplCmy.forEach(ids->{
-            String[] id = ids.split(",");
-            List<Long> newId = Arrays.stream(id).map(Long::parseLong).collect(Collectors.toList());
-            for (int i = 0; i < newId.size()-1; i++) {
-                houseService.updateCmyId(newId.get(i),newId.get(newId.size()-1));
-            }
-            newId.remove(newId.size()-1);
-            communityService.delDuplCmy(newId);
-        });
-        return R.ok();
-    }
+
 }

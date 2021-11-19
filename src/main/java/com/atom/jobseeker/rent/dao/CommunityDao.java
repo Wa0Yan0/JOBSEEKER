@@ -30,4 +30,16 @@ public interface CommunityDao {
      * @return
      */
     int delDupl(@Param("ids") List<Long> ids);
+
+    /**
+     * 将临时表community的数据推送到正式表rent_community中
+     * @return
+     */
+    int postCmyNewData();
+
+    /**
+     * 清空community表
+     * @return
+     */
+    int delCmy();
 }

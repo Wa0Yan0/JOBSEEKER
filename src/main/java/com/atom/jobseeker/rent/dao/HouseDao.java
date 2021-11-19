@@ -62,4 +62,16 @@ public interface HouseDao {
      * @return
      */
     int updateCmyId(@Param("idOne") Long idOne,@Param("idTwo") Long idTwo);
+
+    /**
+     * 将临时house数据表中的数据推送到rent_house正式表中
+     * @return
+     */
+    int postHouseNewData();
+
+    /**
+     * 清空临时表house
+     * @return
+     */
+    int delHouse();
 }

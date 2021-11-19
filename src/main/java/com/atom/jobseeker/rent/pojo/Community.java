@@ -18,6 +18,7 @@ public class Community {
     private String cmyYear;
     private String cmyCost;
     private String cmyPmc;
+    private Long rId;
 
     @Override
     public boolean equals(Object o) {

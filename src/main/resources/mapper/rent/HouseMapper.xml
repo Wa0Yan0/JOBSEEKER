@@ -5,9 +5,17 @@
 
 
 <mapper namespace="com.atom.jobseeker.rent.dao.HouseDao">
+    <insert id="postHouseNewData">
+        insert into rent_house select * from house
+    </insert>
+
     <update id="updateCmyId">
         update house set cmy_id=#{idTwo} where cmy_id=#{idOne}
     </update>
+
+    <delete id="delHouse">
+        delete from house
+    </delete>
 
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">

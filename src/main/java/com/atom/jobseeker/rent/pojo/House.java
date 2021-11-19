@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class House {
     private Long hId;
-    private Long rId;
     private String hTitle;
-    private Long cmyId;
     private float hMoney;
     private String hManner;
     private String hStyle;
@@ -23,5 +21,7 @@ public class House {
     private String hPay;
     private String hRequires;
     private String hStatus;
+    private Long cmyId;
+    private Long rId;
     private Long cId;
 }

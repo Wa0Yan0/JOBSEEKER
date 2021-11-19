@@ -24,32 +24,6 @@ public class CommunityServiceImpl implements CommunityService {
         return communityDao.selectOneById(cmyId);
     }
 
-    @Override
-    public List<String> getDuplCmy() {
-        List<Community> communities = communityDao.selectAllCmy();
-        List<String> idList=new ArrayList<>();
-        Map<Long,String> map=new HashMap<>();
-        Community community=null;
-        String ids;
-        Boolean isExist=null;
-        while(!communities.isEmpty()){
-            ids="";
-            isExist=false;
-            community=communities.get(0);
-            communities.remove(0);
-            while(communities.contains(community)){
-                isExist=true;
-                Community cmy = communities.get(communities.indexOf(community));
-                ids+=cmy.getCmyId().toString()+",";
-                communities.remove(cmy);
-            }
-            if(isExist&&!ids.equals("")){
-                ids+=community.getCmyId();
-                idList.add(ids);
-            }
-        }
-        return idList;
-    }
 
     @Override
     public int delDuplCmy(List<Long> ids) {

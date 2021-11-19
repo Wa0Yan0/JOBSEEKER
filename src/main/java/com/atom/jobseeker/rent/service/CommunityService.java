@@ -16,11 +16,6 @@ public interface CommunityService {
      */
     Community queryCommunityById(Long cmyId);
 
-    /**
-     * 获取重复的id列表
-     * @return
-     */
-    List<String> getDuplCmy();
 
     /**
      * 删除指定id集合的信息
