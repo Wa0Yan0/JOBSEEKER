@@ -115,4 +115,13 @@ public class JobController {
         }
     }
 
+    @RequestMapping("/save")
+    public R save(@RequestBody Job job){
+        jobService.save(job);
+        return R.ok();
+    }
+
+
+
+
 }

@@ -23,5 +23,8 @@
     <select id="selectLocationList" resultType="com.atom.jobseeker.attr.pojo.Location">
         select r_name from location where c_id=#{cityId};
     </select>
+    <select id="selectRegionList" resultType="com.atom.jobseeker.attr.pojo.Region">
+        select * from attr_region
+    </select>
 </mapper>
 

@@ -2,6 +2,7 @@ package com.atom.jobseeker.attr.service;
 
 import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.attr.pojo.Major;
+import com.atom.jobseeker.attr.pojo.Region;
 
 import java.util.List;
 
@@ -21,4 +22,10 @@ public interface AttrService {
      * @return
      */
     List<Major> queryMajorList();
+
+    /**
+     * 查询所有地区信息
+     * @return
+     */
+    List<Region> queryRegionList();
 }

@@ -1,14 +1,18 @@
 package com.atom.jobseeker.post.controller;
 
+import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
 import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.service.CompanyService;
+import com.atom.jobseeker.post.vo.CompanyNameVo;
+import com.atom.jobseeker.post.vo.CompanyVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,5 +53,11 @@ public class CompanyController {
     public R delete(@RequestBody Long[] ids){
         companyService.batchDelete(ids);
         return R.ok();
+    }
+
+    @RequestMapping("/name/list")
+    public R getNameList(@RequestParam String query){
+        List<CompanyNameVo> companyNameList = companyService.queryNameList(query);
+        return R.ok().wrapper("companyNameList", companyNameList);
     }
 }

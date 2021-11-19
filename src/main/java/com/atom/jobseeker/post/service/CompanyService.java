@@ -2,7 +2,10 @@ package com.atom.jobseeker.post.service;
 
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.pojo.Company;
+import com.atom.jobseeker.post.vo.CompanyNameVo;
+import com.atom.jobseeker.post.vo.CompanyVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,4 +46,11 @@ public interface CompanyService {
      * @param ids
      */
     void batchDelete(Long[] ids);
+
+    /**
+     * 查询公司名称列表
+     * @param query
+     * @return
+     */
+    List<CompanyNameVo> queryNameList(String query);
 }

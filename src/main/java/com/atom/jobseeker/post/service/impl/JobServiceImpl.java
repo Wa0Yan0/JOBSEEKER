@@ -91,6 +91,11 @@ public class JobServiceImpl implements JobService {
         return ids.toArray(new Long[0]);
     }
 
+    @Override
+    public void save(Job job) {
+        jobDao.insert(job);
+    }
+
 
     /**
      * 计算薪资区间的平均值

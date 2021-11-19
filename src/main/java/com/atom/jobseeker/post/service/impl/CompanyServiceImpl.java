@@ -7,6 +7,8 @@ import com.atom.jobseeker.post.dao.JobDao;
 import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
+import com.atom.jobseeker.post.vo.CompanyNameVo;
+import com.atom.jobseeker.post.vo.CompanyVo;
 import com.atom.jobseeker.post.vo.QueryVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,11 @@ public class CompanyServiceImpl implements CompanyService {
     public void batchDelete(Long[] ids) {
         jobDao.batchDeleteByCompanyId(ids);
         companyDao.batchDelete(ids);
+    }
+
+    @Override
+    public List<CompanyNameVo> queryNameList(String query) {
+        return  companyDao.selectNameList(query);
     }
 
 }

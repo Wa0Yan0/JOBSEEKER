@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.attr.dao.AttrDao;
 import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.attr.pojo.Major;
+import com.atom.jobseeker.attr.pojo.Region;
+import com.atom.jobseeker.attr.service.AttrService;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
 import com.atom.jobseeker.post.pojo.Company;
@@ -50,6 +52,9 @@ class JobseekerApplicationTests {
 
     @Resource
     private CompanyDao companyDao;
+
+    @Resource
+    private AttrService attrService;
 
     @Test
     void contextLoads() {
@@ -118,9 +123,8 @@ class JobseekerApplicationTests {
 
     @Test
     void insertReturn(){
-        City city = new City();
-        city.setName("南京");
-        System.out.println(city.getId());
+        List<Region> regionList = attrService.queryRegionList();
+        System.out.println(regionList);
     }
 
 

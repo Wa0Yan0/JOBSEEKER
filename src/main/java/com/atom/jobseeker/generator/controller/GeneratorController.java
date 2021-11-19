@@ -27,7 +27,7 @@ public class GeneratorController {
     }
 
     /**
-     * 将处理后的数据存入attr_region和attr_major
+     * 将处理后的数据存入attr_region
      * @return
      */
     @RequestMapping("/attr")

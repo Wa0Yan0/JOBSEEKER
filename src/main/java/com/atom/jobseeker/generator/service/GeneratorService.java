@@ -12,7 +12,7 @@ public interface GeneratorService {
     void genPost();
 
     /**
-     * 对major、city和location表进行处理,并存储到attr_major和attr_region
+     * 对major、city和location表进行处理,并存储到attr_region
      */
     void genAttr();
 }

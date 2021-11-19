@@ -43,6 +43,10 @@
         select * from pos_company
     </select>
 
+    <select id="selectNameList" resultType="com.atom.jobseeker.post.vo.CompanyNameVo">
+        select id, name from pos_company where name like "%"#{query}"%"
+    </select>
+
     <insert id="insert">
         <selectKey resultType="Long" keyProperty="id">
             select @@IDENTITY

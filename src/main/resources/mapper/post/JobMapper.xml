@@ -6,8 +6,8 @@
 
 <mapper namespace="com.atom.jobseeker.post.dao.JobDao">
     <insert id="insert">
-        insert into pos_job(name, salary, welfare, area, experience, education, people_count, issue_date, issue_status, job_info, company_id, city_id, major_id)
-        values (#{job.name},#{job.salary},#{job.welfare},#{job.area},#{job.experience},#{job.education},#{job.peopleCount},#{job.issueDate},#{job.issueStatus},#{job.jobInfo},#{job.companyId},#{job.cityId},#{job.majorId})
+        insert into pos_job(name, salary_min,salary_max, welfare, experience, education, people_count, issue_date, issue_status, job_info, company_id, region_id, major_id)
+        values (#{job.name},#{job.salaryMin},#{job.salaryMax},#{job.welfare},#{job.experience},#{job.education},#{job.peopleCount},#{job.issueDate},#{job.issueStatus},#{job.jobInfo},#{job.companyId},#{job.regionId},#{job.majorId})
     </insert>
 
     <update id="updateBathIssueStatus">

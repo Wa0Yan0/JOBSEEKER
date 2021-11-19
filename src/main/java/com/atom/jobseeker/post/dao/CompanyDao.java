@@ -2,6 +2,8 @@ package com.atom.jobseeker.post.dao;
 
 
 import com.atom.jobseeker.post.pojo.Company;
+import com.atom.jobseeker.post.vo.CompanyNameVo;
+import com.atom.jobseeker.post.vo.CompanyVo;
 import com.atom.jobseeker.post.vo.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -67,4 +69,11 @@ public interface CompanyDao {
      * @param ids
      */
     void batchDelete(@Param("ids") Long[] ids);
+
+    /**
+     * 查询所有名称
+     * @param query
+     * @return
+     */
+    List<CompanyNameVo> selectNameList(@Param("query") String query);
 }

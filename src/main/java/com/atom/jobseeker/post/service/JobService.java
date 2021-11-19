@@ -56,4 +56,10 @@ public interface JobService {
      * @return
      */
     Long[] filterIds(CheckVo checkVo);
+
+    /**
+     * 保存岗位信息
+     * @param job
+     */
+    void save(Job job);
 }

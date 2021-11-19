@@ -3,6 +3,7 @@ package com.atom.jobseeker.post.pojo;
 import lombok.Data;
 import org.aopalliance.intercept.Interceptor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -13,16 +14,16 @@ import java.util.Date;
 public class Job {
     private Long id;
     private String name;
-    private String salary;
+    private BigDecimal salaryMin;
+    private BigDecimal salaryMax;
     private String welfare;
-    private String area;
     private String experience;
     private String education;
     private String peopleCount;
-    private String issueDate;
+    private Date issueDate;
     private String issueStatus;
     private String jobInfo;
     private Long companyId;
-    private Integer cityId;
+    private Integer regionId;
     private Integer majorId;
 }

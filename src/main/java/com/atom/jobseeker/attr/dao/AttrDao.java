@@ -45,4 +45,10 @@ public interface AttrDao {
      * @param regions
      */
     void bathInsert(@Param("regions") List<Region> regions);
+
+    /**
+     * 查询attr_region表全部数据
+     * @return
+     */
+    List<Region> selectRegionList();
 }
