@@ -74,4 +74,13 @@ public interface HouseDao {
      * @return
      */
     int delHouse();
+
+    /**
+     * 修改属于指定cmyId小区的城市和地区信息
+     * @param cId
+     * @param rId
+     * @param cmyId
+     * @return
+     */
+    int updateRegion(@Param("cId") Long cId,@Param("rId") Long rId,@Param("cmyId") Long cmyId);
 }

@@ -8,6 +8,12 @@
     <insert id="postCmyNewData">
         insert into rent_community select * from community
     </insert>
+
+    <update id="updateCmy">
+        update rent_community set cmy_name=#{cmy.cmyName},cmy_region=#{cmy.cmyRegion},cmy_location=#{cmy.cmyLocation},cmy_style=#{cmy.cmyStyle},cmy_year=#{cmy.cmyYear},cmy_cost=#{cmy.cmyCost},cmy_pmc=#{cmy.cmyPmc},region_id=#{cmy.regionId},city_id=#{cmy.cityId}
+        where cmy_id=#{cmy.cmyId}
+    </update>
+
     <delete id="delDupl" parameterType="list">
         delete from community where cmy_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
@@ -19,11 +25,43 @@
     </delete>
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.Community">
-        select * from community where cmy_id=#{cmyId}
+        select * from rent_community where cmy_id=#{cmyId}
     </select>
 
     <select id="selectAllCmy" resultType="com.atom.jobseeker.rent.pojo.Community">
-        select * from community
+        select * from rent_community
+    </select>
+    <select id="selectTotalCount" resultType="java.lang.Integer">
+        select count(*) from rent_community
+    </select>
+    <select id="selectTotalCountWithQuery" resultType="java.lang.Integer">
+        select count(*) from rent_community
+        <where>
+            <if test="queryVo.query!=''">
+                cmy_id = #{queryVo.query} or cmy_name like "%"#{queryVo.query}"%"
+            </if>
+            <if test="queryVo.cityId!=0">
+                and city_id=#{queryVo.cityId}
+            </if>
+            <if test="queryVo.regionId!=0">
+                and region_id=#{queryVo.regionId}
+            </if>
+        </where>
+    </select>
+    <select id="selectListWithQuery" resultType="com.atom.jobseeker.rent.pojo.Community">
+        select * from rent_community
+        <where>
+            <if test="queryVo.query!=''">
+                cmy_id = #{queryVo.query} or cmy_name like "%"#{queryVo.query}"%"
+            </if>
+            <if test="queryVo.cityId!=0">
+                and city_id=#{queryVo.cityId}
+            </if>
+            <if test="queryVo.regionId!=0">
+                and region_id=#{queryVo.regionId}
+            </if>
+        </where>
+        limit #{begin},#{pagesize}
     </select>
 </mapper>
 

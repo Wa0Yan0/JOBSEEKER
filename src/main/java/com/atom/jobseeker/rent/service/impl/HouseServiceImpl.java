@@ -110,4 +110,9 @@ public class HouseServiceImpl implements HouseService {
         return houseDao.updateCmyId(oldId, newId);
     }
 
+    @Override
+    public int updateRegion(Long cId, Long rId, Long cmyId) {
+        return houseDao.updateRegion(cId,rId,cmyId);
+    }
+
 }

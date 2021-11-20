@@ -1,6 +1,7 @@
 package com.atom.jobseeker.rent.dao;
 
 import com.atom.jobseeker.rent.pojo.Community;
+import com.atom.jobseeker.rent.vo.QueryVoCmy;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,4 +43,34 @@ public interface CommunityDao {
      * @return
      */
     int delCmy();
+
+    /**
+     * 搜索总记录数
+     * @return 记录数总数
+     */
+    int selectTotalCount();
+
+    /**
+     * 根据高级查询搜索总记录数
+     * @param queryVo
+     * @return  高级查询后的总记录数
+     */
+    int selectTotalCountWithQuery(@Param("queryVo") QueryVoCmy queryVo);
+
+    /**
+     * 根据高级查询搜索对应的信息列表
+     * @param queryVo
+     * @param begin
+     * @param pageSize
+     * @return  通过高级搜索到的对应的信息列表
+     */
+    List<Community> selectListWithQuery(@Param("queryVo") QueryVoCmy queryVo, @Param("begin") int begin, @Param("pagesize") int pageSize);
+
+    /**
+     * 修改对应的Community信息
+     * @param community
+     * @return
+     */
+    int updateCmy(@Param("cmy") Community community);
+
 }

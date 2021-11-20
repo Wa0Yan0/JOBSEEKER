@@ -22,6 +22,6 @@ public class House {
     private String hRequires;
     private String hStatus;
     private Long cmyId;
-    private Long rId;
-    private Long cId;
+    private Long regionId;
+    private Long cityId;
 }
