@@ -2,25 +2,18 @@ package com.atom.jobseeker.rent.controller;
 
 import com.atom.jobseeker.common.constant.ErrorEnum;
 import com.atom.jobseeker.common.utils.R;
-import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.CommunityService;
 import com.atom.jobseeker.rent.service.HouseService;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.search.es.HouseEs;
-import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticHouseService;
-import com.atom.jobseeker.search.service.ElasticJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author SunLei
@@ -62,24 +55,24 @@ public class HouseController {
      * @param checkVo
      * @return
      */
-    @RequestMapping("/up")
-    public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
-        //过滤需要的id返回id集合
-        Long[] ids = houseService.filterIds(checkVo);
-        try {
-            if (ids.length != 0) {
-                List<HouseEs> HouseEsList = houseService.genHouseEsList(ids);
-                elasticHouseService.upToElastic(HouseEsList);
-                houseService.updateBathIssueStatus(ids, checkVo.getStatus());
-                return R.ok();
-            }else {
-                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
-        }
-    }
+//    @RequestMapping("/up")
+//    public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
+//        //过滤需要的id返回id集合
+//        Long[] ids = houseService.filterIds(checkVo);
+//        try {
+//            if (ids.length != 0) {
+//                List<HouseEs> HouseEsList = houseService.genHouseEsList(ids);
+//                elasticHouseService.upToElastic(HouseEsList);
+//                houseService.updateBathIssueStatus(ids, checkVo.getStatus());
+//                return R.ok();
+//            }else {
+//                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
+//        }
+//    }
 
 
 }

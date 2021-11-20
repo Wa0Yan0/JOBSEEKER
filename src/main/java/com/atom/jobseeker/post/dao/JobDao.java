@@ -50,7 +50,7 @@ public interface JobDao {
      * @param id
      * @return
      */
-    String selectIssueStatus(@Param("id") Long id);
+    Short selectIssueStatus(@Param("id") Long id);
 
     /**
      * 根据id列表批量查询数据
@@ -92,4 +92,11 @@ public interface JobDao {
      * @return
      */
     Post selectJobAndCompanyById(@Param("id") Long id);
+
+    /**
+     * 通过id批量查询岗位和公司的所有数据
+     * @param ids
+     * @return
+     */
+    List<Post> batchSelectJobAndCompanyById(@Param("ids") Long[] ids);
 }

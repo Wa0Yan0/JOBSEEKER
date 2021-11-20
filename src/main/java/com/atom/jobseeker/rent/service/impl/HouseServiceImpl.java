@@ -1,8 +1,5 @@
 package com.atom.jobseeker.rent.service.impl;
 
-import com.atom.jobseeker.post.pojo.Company;
-import com.atom.jobseeker.post.pojo.Job;
-import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.pojo.Community;
 import com.atom.jobseeker.rent.utils.IPage;
@@ -12,7 +9,6 @@ import com.atom.jobseeker.rent.dao.HouseDao;
 import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.HouseService;
 import com.atom.jobseeker.search.es.HouseEs;
-import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,30 +58,30 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public Long[] filterIds(CheckVo checkVo) {
-        //初始化当前id列表
-        ArrayList<Long> ids = new ArrayList<>();
-        //遍历参数中id
-        for (Long id : checkVo.getIds()) {
-            //elasticsearch上线分支
-            if (checkVo.getStatus() != null) {
-                if ("通过".equals(checkVo.getStatus())) {
-                    String issueStatus = houseDao.selectStatus(id);
-                    //防止通过的数据重复更新，过滤已经通过的
-                    if (!"通过".equals(issueStatus)) {
-                        ids.add(id);
-                    }
-                }
-            }
-            //elasticsearch下线分支
-            else {
-                String issueStatus = houseDao.selectStatus(id);
-                if ("通过".equals(issueStatus)) {
-                    ids.add(id);
-                }
-            }
-        }
-        return ids.toArray(new Long[0]);
+    public Long[] filterIds(Long[] ids) {
+//        //初始化当前id列表
+//        ArrayList<Long> ids = new ArrayList<>();
+//        //遍历参数中id
+//        for (Long id : checkVo.getIds()) {
+//            //elasticsearch上线分支
+//            if (checkVo.getStatus() != null) {
+//                if ("通过".equals(checkVo.getStatus())) {
+//                    String issueStatus = houseDao.selectStatus(id);
+//                    //防止通过的数据重复更新，过滤已经通过的
+//                    if (!"通过".equals(issueStatus)) {
+//                        ids.add(id);
+//                    }
+//                }
+//            }
+//            //elasticsearch下线分支
+//            else {
+//                String issueStatus = houseDao.selectStatus(id);
+//                if ("通过".equals(issueStatus)) {
+//                    ids.add(id);
+//                }
+//            }
+//        }
+        return ids;
     }
 
     @Override

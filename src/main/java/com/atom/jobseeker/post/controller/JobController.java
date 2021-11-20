@@ -3,11 +3,9 @@ package com.atom.jobseeker.post.controller;
 import com.atom.jobseeker.common.constant.ErrorEnum;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
-import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.service.JobService;
-import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.PostVo;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
@@ -15,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -62,18 +61,17 @@ public class JobController {
     /**
      * 将岗位信息上传到ElasticSearch中，并修改发布状态
      *
-     * @param checkVo
+     * @param ids
      * @return
      */
     @RequestMapping("/up")
-    public R upAndChangeStatus(@RequestBody CheckVo checkVo) {
-        Long[] ids = jobService.filterIds(checkVo);
-
+    public R up(@RequestBody Long[] ids) {
+        Long[] newIds = jobService.filterIds(ids, "up");
         try {
-            if (ids.length != 0) {
-                List<JobEs> jobEsList = jobService.genJobEsList(ids);
+            if (newIds.length != 0) {
+                List<JobEs> jobEsList = jobService.genJobEsList(newIds);
                 elasticJobService.upToElastic(jobEsList);
-                jobService.updateBathIssueStatus(ids, checkVo.getStatus());
+//                jobService.updateBathIssueStatus(ids, );
                 return R.ok();
             }else {
                 return R.error(ErrorEnum.JOB_RE_PUSH_ERROR.getCode(), ErrorEnum.JOB_RE_PUSH_ERROR.getMsg());
@@ -82,37 +80,37 @@ public class JobController {
             e.printStackTrace();
             return R.error(ErrorEnum.JOB_PUSH_ERROR.getCode(), ErrorEnum.JOB_PUSH_ERROR.getMsg());
         }
-
-
     }
 
     @RequestMapping("/fail")
-    public R changeStatus(@RequestBody CheckVo checkVo){
-        jobService.updateBathIssueStatus(checkVo.getIds(), checkVo.getStatus());
+    public R changeStatus(@RequestBody Long[] ids){
+        System.out.println(Arrays.toString(ids));
+//        jobService.updateBathIssueStatus(checkVo.getIds(), checkVo.getStatus());
         return R.ok();
     }
 
     /**
      * 从ElasticSearch中下架岗位信息，并修改发布状态
      *
-     * @param checkVo
+     * @param ids
      * @return
      */
-    @RequestMapping("/offShelf")
-    public R offShelf(@RequestBody CheckVo checkVo) {
-        Long[] ids = jobService.filterIds(checkVo);
-        try {
-            if (ids.length != 0) {
-                elasticJobService.downFromElastic(ids);
-                jobService.updateBathIssueStatus(ids, "待审核");
-                return R.ok();
-            }else {
-                return R.error(ErrorEnum.JOB_RE_DOWN_ERROR.getCode(), ErrorEnum.JOB_RE_DOWN_ERROR.getMsg());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());
-        }
+    @RequestMapping("/down")
+    public R down(@RequestBody Long[] ids) {
+        Long[] filterIds = jobService.filterIds(ids, "down");
+//        try {
+//            if (ids.length != 0) {
+//                elasticJobService.downFromElastic(ids);
+//                jobService.updateBathIssueStatus(ids, "待审核");
+//                return R.ok();
+//            }else {
+//                return R.error(ErrorEnum.JOB_RE_DOWN_ERROR.getCode(), ErrorEnum.JOB_RE_DOWN_ERROR.getMsg());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());
+//        }
+        return R.ok();
     }
 
     @RequestMapping("/save")

@@ -60,7 +60,7 @@
         from pos_job
     </select>
 
-    <select id="selectIssueStatus" resultType="java.lang.String">
+    <select id="selectIssueStatus" resultType="java.lang.Short">
         select issue_status
         from pos_job
         where id = #{id}
@@ -103,6 +103,14 @@
     <select id="selectJobAndCompanyById" resultType="com.atom.jobseeker.post.pojo.Post">
         select pj.id jobId, pj.name jobName, salary_min, salary_max, welfare, experience, education, people_count, issue_date, issue_status, job_info, company_id, pj.region_id, pj.region_parent_id, major_id, pc.name companyName, type, size, field, address, introduce, img
         from pos_job pj left join pos_company pc on pj.company_id = pc.id where pj.id = #{id};
+    </select>
+
+    <select id="batchSelectJobAndCompanyById" resultType="com.atom.jobseeker.post.pojo.Post">
+        select pj.id jobId, pj.name jobName, salary_min, salary_max, welfare, experience, education, people_count, issue_date, issue_status, job_info, company_id, pj.region_id, pj.region_parent_id, major_id, pc.name companyName, type, size, field, address, introduce, img
+        from pos_job pj left join pos_company pc on pj.company_id = pc.id where pj.id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 

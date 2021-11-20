@@ -3,7 +3,6 @@ package com.atom.jobseeker.search.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
-import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.config.ElasticSearchConfig;
 import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.JobEs;

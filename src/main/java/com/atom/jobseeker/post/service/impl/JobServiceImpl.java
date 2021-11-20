@@ -1,7 +1,6 @@
 package com.atom.jobseeker.post.service.impl;
 
 import com.atom.jobseeker.attr.dao.AttrDao;
-import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.common.constant.IssueStatus;
 import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
@@ -11,17 +10,16 @@ import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.pojo.Post;
 import com.atom.jobseeker.post.service.JobService;
-import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.JobVo;
 import com.atom.jobseeker.post.vo.PostVo;
 import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import com.atom.jobseeker.common.constant.JobConstant;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,41 +73,28 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobEs> genJobEsList(Long[] ids) {
-        //根据当前的id获取job体信息
-        List<Job> jobList = jobDao.selectListById(ids);
-        return jobList.stream().map(job -> {
-            Company company = companyDao.selectOneById(job.getCompanyId());
-            JobEs jobEs = new JobEs(job, company);
-//            jobEs.setSalary(handleSalary(jobEs.getSalaryText()));
+        List<Post> postList = jobDao.batchSelectJobAndCompanyById(ids);
+        return postList.stream().map(post -> {
+            JobEs jobEs = new JobEs();
+            BeanUtils.copyProperties(post, jobEs);
+            jobEs.setSalaryText(parseSalaryToInt(post.getSalaryMin()) + "-" + parseSalaryToInt(post.getSalaryMax()) + "K");
+            Map<String, String> region = attrDao.selectRegionById(post.getRegionId());
+            jobEs.setRegionText(region.get("cityName") + "-" + region.get("regionName"));
+            jobEs.setSalaryAvg(handleSalaryAvg(post.getSalaryMin(), post.getSalaryMax()));
             return jobEs;
         }).collect(Collectors.toList());
     }
 
     @Override
-    public String queryIssueStatus(Long id) {
+    public Short queryIssueStatus(Long id) {
         return jobDao.selectIssueStatus(id);
     }
 
     @Override
-    public Long[] filterIds(CheckVo checkVo) {
-        ArrayList<Long> ids = new ArrayList<>();
-        for (Long id : checkVo.getIds()) {
-            if (checkVo.getStatus() != null) {
-                if ("通过".equals(checkVo.getStatus())) {
-                    String issueStatus = jobDao.selectIssueStatus(id);
-                    if (!"通过".equals(issueStatus)) {
-                        ids.add(id);
-                    }
-                }
-            }
-            else {
-                String issueStatus = jobDao.selectIssueStatus(id);
-                if ("通过".equals(issueStatus)) {
-                    ids.add(id);
-                }
-            }
-        }
-        return ids.toArray(new Long[0]);
+    public Long[] filterIds(Long[] ids, String methodName) {
+        return "up".equals(methodName)
+                ? Arrays.stream(ids).filter(id -> jobDao.selectIssueStatus(id) == 0).toArray(Long[]::new)
+                : Arrays.stream(ids).filter(id -> jobDao.selectIssueStatus(id) == 1).toArray(Long[]::new);
     }
 
     @Override
@@ -134,21 +119,15 @@ public class JobServiceImpl implements JobService {
     /**
      * 计算薪资区间的平均值
      *
-     * @param salaryText
+     * @param salaryMin
+     * @param salaryMax
      * @return
      */
-    private static float handleSalary(String salaryText) {
-        float avgSalary = 0.0f;
-        if (salaryText.endsWith(JobConstant.unitEnum.UNIT_THOUSAND.getUnit())) {
-            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_THOUSAND.getUnit().substring(0, 1))[0].split("-");
-            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 1000;
-        } else if (salaryText.endsWith(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit())) {
-            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit().substring(0, 1))[0].split("-");
-            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 10000;
-        } else {
-            String[] salaryList = salaryText.split(JobConstant.unitEnum.UNIT_TEN_THOUSAND.getUnit().substring(0, 1))[0].split("-");
-            avgSalary = (Float.parseFloat(salaryList[0]) + Float.parseFloat(salaryList[1])) / 2 * 10000 / 12;
-        }
-        return avgSalary;
+    private static BigDecimal handleSalaryAvg(BigDecimal salaryMin, BigDecimal salaryMax) {
+        return salaryMin.add(salaryMax).divide(new BigDecimal("2"));
+    }
+
+    private static int parseSalaryToInt(BigDecimal salary){
+        return Integer.parseInt(String.valueOf(salary.divide(new BigDecimal("1000.00"))));
     }
 }
