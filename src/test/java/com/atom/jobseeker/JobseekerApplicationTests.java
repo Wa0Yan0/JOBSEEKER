@@ -6,6 +6,7 @@ import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.attr.pojo.Major;
 import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.attr.service.AttrService;
+import com.atom.jobseeker.common.constant.IssueStatus;
 import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
 import com.atom.jobseeker.post.pojo.Company;
@@ -123,8 +124,8 @@ class JobseekerApplicationTests {
 
     @Test
     void insertReturn(){
-        List<Region> regionList = attrService.queryRegionList();
-        System.out.println(regionList);
+        Map<String, String> region = attrDao.selectRegionById(4);
+        System.out.println(region.get("cityName"));
     }
 
 

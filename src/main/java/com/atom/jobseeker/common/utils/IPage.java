@@ -29,19 +29,15 @@ public class IPage {
      */
     private int currPage;
     /**
-     * 开始获取的位置
+     * 开始索引的位置
      */
     private int begin;
-    /**
-     * 查询参数
-     */
-    private String query;
 
     public IPage(Map<String, Object> params) {
         this.currPage = 1;
         this.pageSize = 10;
-        List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
 
+        List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
         if (keys.contains("pageNum")) {
             this.currPage = Integer.parseInt(params.get("pageNum").toString());
         }
@@ -71,7 +67,6 @@ public class IPage {
     public int getCurrPage() {
         return currPage;
     }
-
 
     public int getBegin() {
         return begin;

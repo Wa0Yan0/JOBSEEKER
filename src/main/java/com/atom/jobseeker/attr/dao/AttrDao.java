@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wayan
@@ -51,4 +52,11 @@ public interface AttrDao {
      * @return
      */
     List<Region> selectRegionList();
+
+    /**
+     * 根据id查询地区信息
+     * @param regionId
+     * @return
+     */
+    Map<String, String> selectRegionById(@Param("regionId") Integer regionId);
 }

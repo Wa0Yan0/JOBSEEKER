@@ -4,6 +4,7 @@ import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.post.vo.JobVo;
+import com.atom.jobseeker.post.vo.PostVo;
 import com.atom.jobseeker.search.es.JobEs;
 
 import java.util.List;
@@ -61,5 +62,12 @@ public interface JobService {
      * 保存岗位信息
      * @param job
      */
-    void save(Job job);
+    int save(Job job);
+
+    /**
+     * 查询岗位和公司的所有数据
+     * @param id
+     * @return
+     */
+    PostVo queryJobAndCompany(Long id);
 }

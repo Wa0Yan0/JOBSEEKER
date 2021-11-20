@@ -5,14 +5,10 @@ import lombok.Data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * @author wayan
- */
-
 @Data
-public class JobVo {
-    private Long id;
-    private String name;
+public class PostVo {
+    private Long jobId;
+    private String jobName;
     private String salary;
     private String welfare;
     private String region;
@@ -23,6 +19,13 @@ public class JobVo {
     private String issueStatus;
     private String jobInfo;
     private Long companyId;
+    private String companyName;
+    private String type;
+    private String size;
+    private String field;
+    private String address;
+    private String introduce;
+    private String img;
 
     public void setIssueDate(Date issueDate) {
         this.issueDate = new SimpleDateFormat("yyyy-MM-dd").format(issueDate);

@@ -26,5 +26,12 @@
     <select id="selectRegionList" resultType="com.atom.jobseeker.attr.pojo.Region">
         select * from attr_region
     </select>
+    <resultMap id="RegionMap" type="HashMap">
+        <result property="cityName" column="cityName"/>
+        <result property="regionName" column="regionName"/>
+    </resultMap>
+    <select id="selectRegionById" resultMap="RegionMap">
+        select ar2.name cityName, ar1.name regionName from attr_region ar1 left join attr_region ar2 on ar1.parent_id = ar2.id where ar1.id =#{regionId};
+    </select>
 </mapper>
 

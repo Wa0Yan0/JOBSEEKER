@@ -6,8 +6,11 @@
 
 <mapper namespace="com.atom.jobseeker.post.dao.JobDao">
     <insert id="insert">
-        insert into pos_job(name, salary_min,salary_max, welfare, experience, education, people_count, issue_date, issue_status, job_info, company_id, region_id, major_id)
-        values (#{job.name},#{job.salaryMin},#{job.salaryMax},#{job.welfare},#{job.experience},#{job.education},#{job.peopleCount},#{job.issueDate},#{job.issueStatus},#{job.jobInfo},#{job.companyId},#{job.regionId},#{job.majorId})
+        insert into pos_job(name, salary_min, salary_max, welfare, experience, education, people_count, issue_date,
+                            issue_status, job_info, company_id, region_id, region_parent_id, major_id)
+        values (#{job.name}, #{job.salaryMin}, #{job.salaryMax}, #{job.welfare}, #{job.experience}, #{job.education},
+                #{job.peopleCount}, #{job.issueDate}, #{job.issueStatus}, #{job.jobInfo}, #{job.companyId},
+                #{job.regionId}, #{job.regionParentId}, #{job.majorId})
     </insert>
 
     <update id="updateBathIssueStatus">
@@ -29,19 +32,20 @@
         from pos_job
         where id = #{id}
     </select>
+
     <select id="selectListWithQuery" resultType="com.atom.jobseeker.post.pojo.Job">
         select * from pos_job
         <where>
             <if test="queryInfo.query != ''">
                 and id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
             </if>
-            <if test="queryInfo.cityId != 0">
-                and city_id = #{queryInfo.cityId}
+            <if test="queryInfo.regionId != 0">
+                and region_id = #{queryInfo.regionId}
             </if>
             <if test="queryInfo.majorId != 0">
                 and major_id = #{queryInfo.majorId}
             </if>
-            <if test="queryInfo.issueStatus != ''">
+            <if test="queryInfo.issueStatus != -1">
                 and issue_status = #{queryInfo.issueStatus}
             </if>
             <if test="queryInfo.issueDate != ''">
@@ -50,15 +54,18 @@
         </where>
         order by issue_date desc limit #{begin}, #{pageSize}
     </select>
+
     <select id="selectTotalCount" resultType="java.lang.Integer">
         select count(*)
         from pos_job
     </select>
+
     <select id="selectIssueStatus" resultType="java.lang.String">
         select issue_status
         from pos_job
         where id = #{id}
     </select>
+
     <select id="selectListById" resultType="com.atom.jobseeker.post.pojo.Job">
         select * from pos_job where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
@@ -67,22 +74,35 @@
     </select>
 
     <select id="selectCountWithQuery" resultType="java.lang.Long">
-        select count(*) from pos_job where id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
-        <if test="queryInfo.cityId != 0">
-            and city_id = #{queryInfo.cityId}
-        </if>
-        <if test="queryInfo.majorId != 0">
-            and major_id = #{queryInfo.majorId}
-        </if>
-        <if test="queryInfo.issueStatus != ''">
-            and issue_status = #{queryInfo.issueStatus}
-        </if>
-        <if test="queryInfo.issueDate != ''">
-            and issue_date like #{queryInfo.issueDate}"%"
-        </if>
+        select count(*) from pos_job
+        <where>
+            <if test="queryInfo.query != ''">
+                id = #{queryInfo.query} or name like "%"#{queryInfo.query}"%"
+            </if>
+            <if test="queryInfo.regionId != 0">
+                and region_id = #{queryInfo.regionId}
+            </if>
+            <if test="queryInfo.majorId != 0">
+                and major_id = #{queryInfo.majorId}
+            </if>
+            <if test="queryInfo.issueStatus != -1">
+                and issue_status = #{queryInfo.issueStatus}
+            </if>
+            <if test="queryInfo.issueDate != ''">
+                and issue_date like #{queryInfo.issueDate}"%"
+            </if>
+        </where>
     </select>
+
     <select id="selectListByCompanyId" resultType="com.atom.jobseeker.post.pojo.Job">
-        select * from pos_job where company_id = #{id}
+        select *
+        from pos_job
+        where company_id = #{id}
+    </select>
+
+    <select id="selectJobAndCompanyById" resultType="com.atom.jobseeker.post.pojo.Post">
+        select pj.id jobId, pj.name jobName, salary_min, salary_max, welfare, experience, education, people_count, issue_date, issue_status, job_info, company_id, pj.region_id, pj.region_parent_id, major_id, pc.name companyName, type, size, field, address, introduce, img
+        from pos_job pj left join pos_company pc on pj.company_id = pc.id where pj.id = #{id};
     </select>
 
 

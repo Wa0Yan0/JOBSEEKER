@@ -2,6 +2,7 @@ package com.atom.jobseeker.post.dao;
 
 
 import com.atom.jobseeker.post.pojo.Job;
+import com.atom.jobseeker.post.pojo.Post;
 import com.atom.jobseeker.post.vo.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -77,11 +78,18 @@ public interface JobDao {
      * 插入一条数据
      * @param job
      */
-    void insert(@Param("job") Job job);
+    int insert(@Param("job") Job job);
 
     /**
      * 通过companyId批量删除岗位信息
      * @param companyIds
      */
     void batchDeleteByCompanyId(@Param("companyIds") Long[] companyIds);
+
+    /**
+     * 通过id查询岗位和公司的所有数据
+     * @param id
+     * @return
+     */
+    Post selectJobAndCompanyById(@Param("id") Long id);
 }

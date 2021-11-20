@@ -8,6 +8,7 @@ import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.CheckVo;
+import com.atom.jobseeker.post.vo.PostVo;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class JobController {
     private ElasticJobService elasticJobService;
 
     /**
-     * 获取所有数据，带有分页
+     * 获取带有分页的所有数据
      *
      * @param params
      * @return
@@ -54,9 +55,8 @@ public class JobController {
      */
     @RequestMapping("/{id}")
     public R getJobInfo(@PathVariable("id") Long id) {
-        Job jobInfo = jobService.queryJobById(id);
-        Company companyInfo = companyService.queryCompanyById(jobInfo.getCompanyId());
-        return R.ok().wrapper("jobInfo", jobInfo).wrapper("companyInfo", companyInfo);
+        PostVo post = jobService.queryJobAndCompany(id);
+        return R.ok().wrapper("post", post);
     }
 
     /**
@@ -117,8 +117,8 @@ public class JobController {
 
     @RequestMapping("/save")
     public R save(@RequestBody Job job){
-        jobService.save(job);
-        return R.ok();
+        int count = jobService.save(job);
+        return count !=0 ? R.ok() : R.error(ErrorEnum.JOB_SAVE_ERROR.getCode(), ErrorEnum.JOB_SAVE_ERROR.getMsg());
     }
 
 
