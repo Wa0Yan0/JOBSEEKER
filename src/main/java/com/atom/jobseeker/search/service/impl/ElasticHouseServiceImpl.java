@@ -44,29 +44,6 @@ public class ElasticHouseServiceImpl implements ElasticHouseService {
     private RestHighLevelClient esClient;
 
     @Override
-    public boolean upToElastic(List<HouseEs> houseEsList) throws IOException {
-        BulkRequest bulkRequest = new BulkRequest();
-        houseEsList.forEach(houseEs -> {
-            String houseEsStr = JSON.toJSONString(houseEs);
-            IndexRequest indexRequest = new IndexRequest(EsConstant.House_INDEX).id(houseEs.getHId().toString()).source(houseEsStr, XContentType.JSON);
-            bulkRequest.add(indexRequest);
-        });
-        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
-        return bulk.hasFailures();
-    }
-
-    @Override
-    public boolean downFromElastic(Long[] ids) throws IOException {
-        BulkRequest bulkRequest = new BulkRequest();
-        for (Long id : ids) {
-            DeleteRequest deleteRequest = new DeleteRequest(EsConstant.House_INDEX, id.toString());
-            bulkRequest.add(deleteRequest);
-        }
-        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
-        return bulk.hasFailures();
-    }
-
-    @Override
     public PageUtils queryPage(Map<String, Object> params) {
         List<HouseEs> houseEsList = new ArrayList<>();
         IPage iPage = new IPage(params);

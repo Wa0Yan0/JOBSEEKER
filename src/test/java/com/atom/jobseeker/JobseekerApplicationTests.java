@@ -127,8 +127,6 @@ class JobseekerApplicationTests {
         Long[] ids = new Long[2];
         ids[0] = 1L;
         ids[1] = 2L;
-        List<JobEs> jobEs = jobService.genJobEsList(ids);
-        System.out.println(jobEs);
     }
 
 

@@ -41,9 +41,9 @@ public interface JobDao {
     /**
      *  批量跟新发布状态
      * @param ids
-     * @param status
+     * @param issueStatus
      */
-    void updateBathIssueStatus(@Param("ids") Long[] ids,@Param("status") String status);
+    void updateBathIssueStatus(@Param("ids") Long[] ids,@Param("issueStatus") Short issueStatus);
 
     /**
      * 根据id查询状态

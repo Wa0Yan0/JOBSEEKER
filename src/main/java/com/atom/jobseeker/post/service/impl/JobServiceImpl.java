@@ -67,8 +67,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void updateBathIssueStatus(Long[] ids, String status) {
-        jobDao.updateBathIssueStatus(ids, status);
+    public void updateBathIssueStatus(Long[] ids, Short issueStatus) {
+        jobDao.updateBathIssueStatus(ids, issueStatus);
     }
 
     @Override

@@ -1,16 +1,20 @@
 package com.atom.jobseeker.post.controller;
 
 import com.atom.jobseeker.common.constant.ErrorEnum;
+import com.atom.jobseeker.common.constant.IssueStatus;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.service.CompanyService;
 import com.atom.jobseeker.post.service.JobService;
 import com.atom.jobseeker.post.vo.PostVo;
+import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.JobEs;
 import com.atom.jobseeker.search.service.ElasticJobService;
+import com.atom.jobseeker.search.service.ElasticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,13 +33,10 @@ public class JobController {
     private JobService jobService;
 
     @Resource
-    private CompanyService companyService;
-
-    @Resource
-    private ElasticJobService elasticJobService;
+    private ElasticService elasticService;
 
     /**
-     * 获取带有分页的所有数据
+     * 查询页面显示的分页数据
      *
      * @param params
      * @return
@@ -47,7 +48,7 @@ public class JobController {
     }
 
     /**
-     * 通过id查找对应的岗位信息
+     * 查询指定id的岗位和企业信息
      *
      * @param id
      * @return
@@ -59,7 +60,7 @@ public class JobController {
     }
 
     /**
-     * 将岗位信息上传到ElasticSearch中，并修改发布状态
+     * 将需要索引的数据上传到ElasticSearch中，并修改发布状态为通过
      *
      * @param ids
      * @return
@@ -70,10 +71,10 @@ public class JobController {
         try {
             if (newIds.length != 0) {
                 List<JobEs> jobEsList = jobService.genJobEsList(newIds);
-                elasticJobService.upToElastic(jobEsList);
-//                jobService.updateBathIssueStatus(ids, );
+                elasticService.upToElastic(jobEsList, EsConstant.JOB_INDEX);
+                jobService.updateBathIssueStatus(ids, (short) 1);
                 return R.ok();
-            }else {
+            } else {
                 return R.error(ErrorEnum.JOB_RE_PUSH_ERROR.getCode(), ErrorEnum.JOB_RE_PUSH_ERROR.getMsg());
             }
         } catch (IOException e) {
@@ -82,44 +83,50 @@ public class JobController {
         }
     }
 
+    /**
+     * 将不符合要求的数据，修改为未通过状态
+     * @param ids
+     * @return
+     */
     @RequestMapping("/fail")
-    public R changeStatus(@RequestBody Long[] ids){
-        System.out.println(Arrays.toString(ids));
-//        jobService.updateBathIssueStatus(checkVo.getIds(), checkVo.getStatus());
+    public R changeStatus(@RequestBody Long[] ids) {
+        jobService.updateBathIssueStatus(ids, (short) 2);
         return R.ok();
     }
 
     /**
-     * 从ElasticSearch中下架岗位信息，并修改发布状态
+     * 从ElasticSearch中下架索引数据，并修改发布状态为待审核
      *
      * @param ids
      * @return
      */
     @RequestMapping("/down")
     public R down(@RequestBody Long[] ids) {
-        Long[] filterIds = jobService.filterIds(ids, "down");
-//        try {
-//            if (ids.length != 0) {
-//                elasticJobService.downFromElastic(ids);
-//                jobService.updateBathIssueStatus(ids, "待审核");
-//                return R.ok();
-//            }else {
-//                return R.error(ErrorEnum.JOB_RE_DOWN_ERROR.getCode(), ErrorEnum.JOB_RE_DOWN_ERROR.getMsg());
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());
-//        }
-        return R.ok();
+        Long[] newIds = jobService.filterIds(ids, "down");
+        try {
+            if (ids.length != 0) {
+                elasticService.downFromElastic(newIds, EsConstant.JOB_INDEX);
+                jobService.updateBathIssueStatus(ids, (short) 0);
+                return R.ok();
+            } else {
+                return R.error(ErrorEnum.JOB_RE_DOWN_ERROR.getCode(), ErrorEnum.JOB_RE_DOWN_ERROR.getMsg());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error(ErrorEnum.JOB_DOWN_ERROR.getCode(), ErrorEnum.JOB_DOWN_ERROR.getMsg());
+        }
     }
 
+    /**
+     * 保存发布的岗位信息
+     * @param job
+     * @return
+     */
     @RequestMapping("/save")
-    public R save(@RequestBody Job job){
+    public R save(@RequestBody Job job) {
         int count = jobService.save(job);
-        return count !=0 ? R.ok() : R.error(ErrorEnum.JOB_SAVE_ERROR.getCode(), ErrorEnum.JOB_SAVE_ERROR.getMsg());
+        return count != 0 ? R.ok() : R.error(ErrorEnum.JOB_SAVE_ERROR.getCode(), ErrorEnum.JOB_SAVE_ERROR.getMsg());
     }
-
-
 
 
 }

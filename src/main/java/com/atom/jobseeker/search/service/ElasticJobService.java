@@ -14,20 +14,6 @@ import java.util.Map;
 public interface ElasticJobService {
 
     /**
-     * 将数据模型保存到ElasticSearch
-     * @param jobEs
-     * @return boolean
-     * @throws IOException
-     */
-    boolean upToElastic(List<JobEs> jobEs) throws IOException;
-
-    /**
-     * 将数据模型从ElasticSearch中删除
-     * @param ids
-     */
-    boolean downFromElastic(Long[] ids) throws IOException;
-
-    /**
      * 从ElasticSearch查询分页数据
      * @param params
      * @return

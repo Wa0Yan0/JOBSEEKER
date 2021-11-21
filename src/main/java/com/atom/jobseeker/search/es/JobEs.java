@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public class JobEs {
-    private Long jobId;
+    private Long id;
     private String jobName;
     private String salaryText;
     private BigDecimal salaryMin;
@@ -24,6 +24,7 @@ public class JobEs {
     private String peopleCount;
     private String issueDate;
     private Integer regionId;
+    private Integer majorId;
     private Integer regionParentId;
     private Long companyId;
     private String companyName;

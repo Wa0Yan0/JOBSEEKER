@@ -30,9 +30,9 @@ public interface JobService {
     /**
      * 修改发布状态
      * @param id
-     * @param status
+     * @param issueStatus
      */
-    void updateBathIssueStatus(Long[] id, String status);
+    void updateBathIssueStatus(Long[] id, Short issueStatus);
 
     /**
      * 生成jobEs模块的实体
