@@ -12,6 +12,9 @@
     <update id="updateCmyId">
         update house set cmy_id=#{idTwo} where cmy_id=#{idOne}
     </update>
+    <update id="updateRegion">
+        update rent_house set region_id=#{rId},city_id=#{cId} where cmy_id=#{cmyId}
+    </update>
 
     <delete id="delHouse">
         delete from house
@@ -19,24 +22,24 @@
 
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">
-        select * from house where h_id=#{hId}
+        select * from rent_house where h_id=#{hId}
     </select>
 
     <select id="selectTotalCount" resultType="java.lang.Integer">
-        select count(*) from house
+        select count(*) from rent_house
     </select>
 
     <select id="selectTotalCountWithQuery" resultType="java.lang.Integer">
-        select count(*) from house
+        select count(*) from rent_house
         <where>
             <if test="queryVo.query!=''">
                 h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
             </if>
             <if test="queryVo.cityId!=0">
-                and c_id=#{queryVo.cityId}
+                and city_id=#{queryVo.cityId}
             </if>
             <if test="queryVo.regionId!=0">
-                and r_id=#{queryVo.regionId}
+                and region_id=#{queryVo.regionId}
             </if>
             <if test="queryVo.houseStatus!=''">
                 and h_status=#{queryVo.houseStatus}
@@ -48,16 +51,16 @@
     </select>
 
     <select id="selectListWithQuery" resultType="com.atom.jobseeker.rent.pojo.House">
-        select * from house
+        select * from rent_house
         <where>
             <if test="queryVo.query!=''">
                 h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
             </if>
             <if test="queryVo.cityId!=0">
-                and c_id=#{queryVo.cityId}
+                and city_id=#{queryVo.cityId}
             </if>
             <if test="queryVo.regionId!=0">
-                and r_id=#{queryVo.regionId}
+                and region_id=#{queryVo.regionId}
             </if>
             <if test="queryVo.houseStatus!=''">
                 and h_status=#{queryVo.houseStatus}
@@ -69,10 +72,10 @@
         limit #{begin},#{pagesize}
     </select>
     <select id="selectStatus" resultType="java.lang.String">
-        select h_status from house where h_id=#{hId}
+        select h_status from rent_house where h_id=#{hId}
     </select>
     <select id="selectHouseList" resultType="com.atom.jobseeker.rent.pojo.House">
-        select * from house where h_id in
+        select * from rent_house where h_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>

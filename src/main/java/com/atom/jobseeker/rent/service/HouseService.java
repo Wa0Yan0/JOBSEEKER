@@ -53,4 +53,13 @@ public interface HouseService {
      * @return
      */
     int updateCmyId(Long oldId,Long newId);
+
+    /**
+     * 修改属于指定cmyId小区的城市和地区信息
+     * @param cId
+     * @param rId
+     * @param cmyId
+     * @return
+     */
+    int updateRegion(Long cId,Long rId,Long cmyId);
 }

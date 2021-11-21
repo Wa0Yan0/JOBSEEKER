@@ -18,7 +18,8 @@ public class Community {
     private String cmyYear;
     private String cmyCost;
     private String cmyPmc;
-    private Long rId;
+    private Long regionId;
+    private Long cityId;
 
     @Override
     public boolean equals(Object o) {
