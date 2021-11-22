@@ -1,6 +1,7 @@
 package com.atom.jobseeker.post.controller;
 
 import com.atom.jobseeker.attr.pojo.City;
+import com.atom.jobseeker.common.constant.ErrorEnum;
 import com.atom.jobseeker.common.utils.PageUtils;
 import com.atom.jobseeker.common.utils.R;
 import com.atom.jobseeker.post.pojo.Company;
@@ -34,6 +35,7 @@ public class CompanyController {
     @RequestMapping("/{id}")
     public R getCompanyInfo(@PathVariable("id") Long id){
         Company company = companyService.queryCompanyById(id);
+        System.out.println(company);
         return R.ok().wrapper("company", company);
     }
 
@@ -59,5 +61,11 @@ public class CompanyController {
     public R getNameList(@RequestParam String query){
         List<CompanyNameVo> companyNameList = companyService.queryNameList(query);
         return R.ok().wrapper("companyNameList", companyNameList);
+    }
+
+    @RequestMapping("/validate")
+    public R validateCompanyName(@RequestParam String companyName){
+        Long companyId = companyService.queryCompanyId(companyName);
+        return companyId == null ? R.ok() : R.error(ErrorEnum.COMPANY_NAME_EXIT.getCode(), ErrorEnum.COMPANY_NAME_EXIT.getMsg());
     }
 }

@@ -59,4 +59,10 @@ public interface AttrDao {
      * @return
      */
     Map<String, String> selectRegionById(@Param("regionId") Integer regionId);
+
+    /**
+     * 查询所有城市
+     * @return
+     */
+    List<Region> selectRegionParentList();
 }

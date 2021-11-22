@@ -76,4 +76,11 @@ public interface CompanyDao {
      * @return
      */
     List<CompanyNameVo> selectNameList(@Param("query") String query);
+
+    /**
+     * 通过公司名称，查询公司id
+     * @param companyName
+     * @return
+     */
+    Long selectCompanyId(@Param("companyName") String companyName);
 }

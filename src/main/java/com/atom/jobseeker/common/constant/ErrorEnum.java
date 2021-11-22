@@ -9,6 +9,7 @@ public enum ErrorEnum {
     JOB_RE_DOWN_ERROR(503, "未上线无需下架"),
     JOB_RE_PUSH_ERROR(503, "请勿重新上线"),
     JOB_SAVE_ERROR(504, "发布岗位信息失败，请重新发布"),
+    COMPANY_NAME_EXIT(505, "该公司已存在"),
 
     HOUSE_PUSH_ERROR(501, "房屋推送出现异常"),
     HOUSE_DOWN_ERROR(502, "房屋下架出现异常"),
