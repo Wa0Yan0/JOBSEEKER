@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 public class Post {
-    private Long jobId;
+    private Long id;
     private String jobName;
     private BigDecimal salaryMin;
     private BigDecimal salaryMax;

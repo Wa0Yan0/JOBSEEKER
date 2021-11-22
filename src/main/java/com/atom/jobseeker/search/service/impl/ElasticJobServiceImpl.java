@@ -3,7 +3,6 @@ package com.atom.jobseeker.search.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
-import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.config.ElasticSearchConfig;
 import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.JobEs;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,29 +40,6 @@ public class ElasticJobServiceImpl implements ElasticJobService {
 
     @Resource
     private RestHighLevelClient esClient;
-
-    @Override
-    public boolean upToElastic(List<JobEs> jobEsList) throws IOException {
-        BulkRequest bulkRequest = new BulkRequest();
-        jobEsList.forEach(jobEs -> {
-            String jobEsStr = JSON.toJSONString(jobEs);
-            IndexRequest indexRequest = new IndexRequest(EsConstant.JOB_INDEX).id(jobEs.getJobId().toString()).source(jobEsStr, XContentType.JSON);
-            bulkRequest.add(indexRequest);
-        });
-        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
-        return bulk.hasFailures();
-    }
-
-    @Override
-    public boolean downFromElastic(Long[] ids) throws IOException {
-        BulkRequest bulkRequest = new BulkRequest();
-        for (Long id : ids) {
-            DeleteRequest deleteRequest = new DeleteRequest(EsConstant.JOB_INDEX, id.toString());
-            bulkRequest.add(deleteRequest);
-        }
-        BulkResponse bulk = esClient.bulk(bulkRequest, ElasticSearchConfig.COMMON_OPTIONS);
-        return bulk.hasFailures();
-    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

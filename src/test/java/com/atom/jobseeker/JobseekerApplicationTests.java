@@ -124,8 +124,9 @@ class JobseekerApplicationTests {
 
     @Test
     void insertReturn(){
-        Map<String, String> region = attrDao.selectRegionById(4);
-        System.out.println(region.get("cityName"));
+        Long[] ids = new Long[2];
+        ids[0] = 1L;
+        ids[1] = 2L;
     }
 
 

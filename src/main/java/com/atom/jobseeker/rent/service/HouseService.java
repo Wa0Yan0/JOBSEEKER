@@ -1,11 +1,8 @@
 package com.atom.jobseeker.rent.service;
 
-import com.atom.jobseeker.post.vo.CheckVo;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.search.es.HouseEs;
-import com.atom.jobseeker.search.es.JobEs;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +30,7 @@ public interface HouseService {
      * @param checkVo
      * @return  返回需要更改状态的id集合
      */
-    Long[] filterIds(CheckVo checkVo);
+    Long[] filterIds(Long[] ids);
 
     /**
      * 生成jobEs模块的实体

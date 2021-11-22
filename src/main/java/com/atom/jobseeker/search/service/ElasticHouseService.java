@@ -14,19 +14,6 @@ import java.util.Map;
  */
 public interface ElasticHouseService {
 
-    /**
-     * 将数据模型保存到ElasticSearch
-     * @param houseEs
-     * @return boolean
-     * @throws IOException
-     */
-    boolean upToElastic(List<HouseEs> houseEs) throws IOException;
-
-    /**
-     * 将数据模型从ElasticSearch中删除
-     * @param ids
-     */
-    boolean downFromElastic(Long[] ids) throws IOException;
 
     /**
      * 从ElasticSearch查询分页数据
