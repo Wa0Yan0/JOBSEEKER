@@ -65,4 +65,11 @@ public interface HouseService {
      * @return
      */
     int updateRegion(Long cId,Long rId,Long cmyId);
+
+    /**
+     * 删除正式表属于指定cmyId的房屋信息
+     * @param id
+     * @return
+     */
+    int delNewHouseByCmyId(List<Long> ids);
 }

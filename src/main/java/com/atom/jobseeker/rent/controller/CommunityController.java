@@ -8,6 +8,7 @@ import com.atom.jobseeker.rent.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,8 +44,13 @@ public class CommunityController {
         return R.ok().wrapper("page", pageUtils);
     }
 
+    /**
+     * 更新单条小区信息
+     * @param community
+     * @return
+     */
     @RequestMapping("/update")
-    public R saveCmy(@RequestBody Community community){
+    public R updateCmy(@RequestBody Community community){
         int i = communityService.updateCmy(community);
         if (i>0){
             houseService.updateRegion(community.getCityId(), community.getRegionId(),community.getCmyId());
@@ -52,5 +58,33 @@ public class CommunityController {
         }else {
             return R.error(508,"更新小区信息失败");
         }
+    }
+
+    /**
+     * 新增小区
+     * @param community
+     * @return
+     */
+    @RequestMapping("/add")
+    public R addNewCmy(@RequestBody Community community){
+        int existsCmy = communityService.isExistsCmy(community);
+        if (existsCmy<1){
+            communityService.addNewCmy(community);
+            return R.ok();
+        }else {
+            return R.error(509,"该小区已经存在");
+        }
+    }
+
+    /**
+     * 删除小区
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/delete")
+    public R delNewCmy(@RequestBody List<Long> ids){
+        houseService.delNewHouseByCmyId(ids);
+        communityService.delNewCmy(ids);
+        return R.ok();
     }
 }

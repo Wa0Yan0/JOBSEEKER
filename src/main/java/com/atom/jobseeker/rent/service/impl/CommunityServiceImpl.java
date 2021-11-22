@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,25 @@ public class CommunityServiceImpl implements CommunityService {
     public int updateCmy(Community community) {
         System.out.println(community.getCityId()+","+community.getRegionId()+","+community.getCmyId());
         return communityDao.updateCmy(community);
+    }
+
+    @Override
+    public Long addNewCmy(Community community) {
+         communityDao.insertCmy(community);
+         communityDao.insertNewCmy(community);
+         List<Long> id = Arrays.asList(community.getCmyId());
+         communityDao.delDupl(id);
+         return community.getCmyId();
+    }
+
+    @Override
+    public int isExistsCmy(Community community) {
+        return communityDao.selectCmyIsExist(community);
+    }
+
+    @Override
+    public int delNewCmy(List<Long> ids) {
+        return  communityDao.delOneNewCmy(ids);
     }
 
 

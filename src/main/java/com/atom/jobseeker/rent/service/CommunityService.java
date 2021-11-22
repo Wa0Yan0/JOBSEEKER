@@ -40,4 +40,24 @@ public interface CommunityService {
      */
     int updateCmy(Community community);
 
+    /**
+     * 新增小区
+     * @param community
+     * @return
+     */
+    Long addNewCmy(Community community);
+
+    /**
+     * 查看当前小区是否在正式表中存在
+     * @param community
+     * @return
+     */
+    int isExistsCmy(Community community);
+
+    /**
+     * 删除正式表的一条对应的小区信息
+     * @param ids
+     * @return
+     */
+    int delNewCmy(List<Long> ids);
 }

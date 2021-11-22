@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author SunLei
+ */
 @Service
 public class HouseServiceImpl implements HouseService {
     @Autowired
@@ -113,6 +116,11 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public int updateRegion(Long cId, Long rId, Long cmyId) {
         return houseDao.updateRegion(cId,rId,cmyId);
+    }
+
+    @Override
+    public int delNewHouseByCmyId(List<Long> ids) {
+        return houseDao.delNewHouseByCmyId(ids);
     }
 
 }

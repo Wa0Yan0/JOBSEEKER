@@ -39,7 +39,7 @@ public interface CommunityDao {
     int postCmyNewData();
 
     /**
-     * 清空community表
+     * 清空community临时表
      * @return
      */
     int delCmy();
@@ -73,4 +73,32 @@ public interface CommunityDao {
      */
     int updateCmy(@Param("cmy") Community community);
 
+    /**
+     * 插入临时表新的小区信息
+     * @param community
+     * @return
+     */
+    int insertCmy(@Param("cmy") Community community);
+
+    /**
+     * 插入临时表新的小区信息
+     * @param community
+     * @return
+     */
+    int insertNewCmy(@Param("cmy") Community community);
+
+    /**
+     * 查询正式表中是否存在该小区
+     * @param community
+     * @return
+     */
+    int selectCmyIsExist(@Param("cmy") Community community);
+
+
+    /**
+     * 删除正式表的对应的小区信息
+     * @param ids
+     * @return
+     */
+    int delOneNewCmy(@Param("ids") List<Long> ids);
 }

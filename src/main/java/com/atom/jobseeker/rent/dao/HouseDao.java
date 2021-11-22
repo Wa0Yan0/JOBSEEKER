@@ -83,4 +83,11 @@ public interface HouseDao {
      * @return
      */
     int updateRegion(@Param("cId") Long cId,@Param("rId") Long rId,@Param("cmyId") Long cmyId);
+
+    /**
+     * 删除正式表中属于指定cmyId的房屋信息
+     * @param ids
+     * @return
+     */
+    int delNewHouseByCmyId(@Param("ids")List<Long> ids);
 }
