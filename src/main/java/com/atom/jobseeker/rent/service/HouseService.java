@@ -33,12 +33,12 @@ public interface HouseService {
      */
     Long[] filterIds(Long[] ids,String methodName);
 
-    /**
-     * 生成jobEs模块的实体
-     * @param ids
-     * @return
-     */
-    List<HouseEs> genHouseEsList(Long[] ids);
+//    /**
+//     * 生成jobEs模块的实体
+//     * @param ids
+//     * @return
+//     */
+//    List<HouseEs> genHouseEsList(Long[] ids);
 
     /**
      * 修改发布状态
@@ -70,4 +70,25 @@ public interface HouseService {
      * @return
      */
     int delNewHouseByCmyId(List<Long> ids);
+
+    /**
+     * 更新单条对应的房屋信息
+     * @param house
+     * @return
+     */
+    int updateOneHouse(House house);
+
+    /**
+     * 新增房屋信息
+     * @param house
+     * @return
+     */
+    int addNewHouse(House house);
+
+    /**
+     * 根据id删除正式表中的房屋信息
+     * @param ids
+     * @return
+     */
+    int deleteNewHouseByIds(List<Long> ids);
 }

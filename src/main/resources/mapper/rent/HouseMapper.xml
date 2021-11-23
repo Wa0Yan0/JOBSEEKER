@@ -8,12 +8,23 @@
     <insert id="postHouseNewData">
         insert into rent_house select * from house
     </insert>
+    <insert id="insertNewHouse">
+        insert into rent_house values(#{house.hosId},#{house.hosTitle},#{house.hosMoney},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosPay},#{house.hosRequires},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
+    </insert>
+    <insert id="insertHouse" keyProperty="hosId" useGeneratedKeys="true">
+        insert into house(hos_title,hos_money,hos_manner,hos_style,hos_towards,hos_tag,hos_intro,hos_imgUrl,hos_facility,hos_pay,hos_requires,hos_date,hos_status,cmy_id,region_id,city_id) values(#{house.hosTitle},#{house.hosMoney},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosPay},#{house.hosRequires},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
+    </insert>
+
 
     <update id="updateCmyId">
         update house set cmy_id=#{idTwo} where cmy_id=#{idOne}
     </update>
     <update id="updateRegion">
         update rent_house set region_id=#{rId},city_id=#{cId} where cmy_id=#{cmyId}
+    </update>
+
+    <update id="updateOneHouse">
+        update rent_house set hos_title=#{house.hosTitle},hos_money=#{house.hosMoney},hos_Manner=#{house.hosManner},hos_style=#{house.hosStyle},hos_towards=#{house.hosTowards},hos_tag=#{house.hosTag},hos_intro=#{house.hosIntro},hos_pay=#{house.hosPay},hos_requires=#{house.hosRequires},cmy_id=#{house.cmyId} where hos_id=#{house.hosId}
     </update>
 
     <delete id="delHouse">
@@ -27,9 +38,20 @@
         </foreach>
     </delete>
 
+    <delete id="delNewHouseByIds">
+        delete from rent_house where hos_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="delHouseById">
+        delete from house where hos_id=#{id}
+    </delete>
+
 
     <select id="selectOneById" resultType="com.atom.jobseeker.rent.pojo.House">
-        select * from rent_house where h_id=#{hId}
+        select * from rent_house where hos_id=#{hosId}
     </select>
 
     <select id="selectTotalCount" resultType="java.lang.Integer">
@@ -40,7 +62,7 @@
         select count(*) from rent_house
         <where>
             <if test="queryVo.query!=''">
-                h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
+                hos_id = #{queryVo.query} or hos_title like "%"#{queryVo.query}"%"
             </if>
             <if test="queryVo.cityId!=0">
                 and city_id=#{queryVo.cityId}
@@ -49,10 +71,10 @@
                 and region_id=#{queryVo.regionId}
             </if>
             <if test="queryVo.houseStatus!=''">
-                and h_status=#{queryVo.houseStatus}
+                and hos_status=#{queryVo.houseStatus}
             </if>
             <if test="queryVo.endPrice!=0.0">
-                and h_money between #{queryVo.startPrice} and #{queryVo.endPrice}
+                and hos_money between #{queryVo.startPrice} and #{queryVo.endPrice}
             </if>
         </where>
     </select>
@@ -61,7 +83,7 @@
         select * from rent_house
         <where>
             <if test="queryVo.query!=''">
-                h_id = #{queryVo.query} or h_title like "%"#{queryVo.query}"%"
+                hos_id = #{queryVo.query} or hos_title like "%"#{queryVo.query}"%"
             </if>
             <if test="queryVo.cityId!=0">
                 and city_id=#{queryVo.cityId}
@@ -70,19 +92,21 @@
                 and region_id=#{queryVo.regionId}
             </if>
             <if test="queryVo.houseStatus!=''">
-                and h_status=#{queryVo.houseStatus}
+                and hos_status=#{queryVo.houseStatus}
             </if>
             <if test="queryVo.endPrice!=0.0">
-                and h_money between #{queryVo.startPrice} and #{queryVo.endPrice}
+                and hos_money between #{queryVo.startPrice} and #{queryVo.endPrice}
             </if>
         </where>
         limit #{begin},#{pagesize}
     </select>
+
     <select id="selectStatus" resultType="java.lang.Short">
-        select h_status from rent_house where h_id=#{hId}
+        select hos_status from rent_house where hos_id=#{hosId}
     </select>
+
     <select id="selectHouseList" resultType="com.atom.jobseeker.rent.pojo.House">
-        select * from rent_house where h_id in
+        select * from rent_house where hos_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>

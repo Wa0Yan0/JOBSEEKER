@@ -35,7 +35,7 @@ public class QueryVo {
     /**
      * 审核状态分为：通过/未通过/待审核
      */
-    private String houseStatus;
+    private Short houseStatus;
 
     public QueryVo() {
     }
@@ -43,7 +43,7 @@ public class QueryVo {
     public QueryVo(Map<String, Object> params) {
 
         this.query = "";
-        this.houseStatus = "";
+        this.houseStatus = 0;
         List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
 
 
@@ -61,7 +61,7 @@ public class QueryVo {
             this.regionId = "".equals(params.get("regionId").toString()) ? 0 : Integer.parseInt(params.get("regionId").toString());
         }
         if (keys.contains("houseStatus")) {
-            this.houseStatus = (String) params.get("houseStatus");
+            this.houseStatus = (Short) params.get("houseStatus");
         }
         if (keys.contains("startPrice")){
             this.startPrice="".equals(params.get("startPrice").toString()) ? 0.0F : Integer.parseInt(params.get("startPrice").toString());
@@ -76,7 +76,7 @@ public class QueryVo {
      * @return TRUE带有高级查询FALSE不带高级查询
      */
     public boolean hasQuery(){
-        return !"".equals(this.query) || !"".equals(this.houseStatus) ||  cityId != 0 || regionId != 0  || startPrice!=0.0F || endPrice!=0.0F;
+        return !"".equals(this.query) || 0==this.houseStatus|| 1==this.houseStatus|| 2==this.houseStatus ||  cityId != 0 || regionId != 0  || startPrice!=0.0F || endPrice!=0.0F;
     }
 
     @Override

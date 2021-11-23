@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author SunLei
  */
@@ -20,27 +24,27 @@ public class HouseEs {
     /**
      * 房屋信息标题
      */
-    private String hTitle;
+    private String hosTitle;
     /**
      * 房屋租赁方式：整租-单间之类
      */
-    private String hManner;
+    private String hosManner;
     /**
      * 租房价格
      */
-    private float hMoney;
+    private BigDecimal hosMoney;
     /**
      * 房屋类型
      */
-    private String hStyle;
+    private String hosStyle;
     /**
      * 房屋信息发布时间
      */
-    private String hDate;
+    private String hosDate;
     /**
      * 房源图片
      */
-    private String hImgUrl;
+    private String hosImgUrl;
     /**
      * 小区名称
      */
@@ -58,17 +62,8 @@ public class HouseEs {
      */
     private Integer cityId;
 
-    public HouseEs(House house, Community community) {
-        this.id = house.getHId();
-        this.hTitle = house.getHTitle();
-        this.hManner = house.getHManner();
-        this.hMoney = house.getHMoney();
-        this.hStyle = house.getHStyle();
-        this.hDate=house.getHDate();
-        this.hImgUrl = house.getHImgUrl().split(";")[0];
-        this.cmyName = community.getCmyName();
-        this.cmyRegion = community.getCmyRegion();
-        this.regionId = Math.toIntExact(community.getRegionId());
-        this.cityId = Math.toIntExact(community.getCityId());
+
+    public void setHosDate(Date hosDate) {
+        this.hosDate = new SimpleDateFormat("yyyy-MM-dd").format(hosDate);
     }
 }

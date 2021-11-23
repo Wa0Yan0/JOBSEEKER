@@ -26,20 +26,12 @@ public class QueryVoCmy {
      */
     private int regionId;
 
-
-
-    /**
-     * 审核状态分为：通过/未通过/待审核
-     */
-    private String cmyStatus;
-
     public QueryVoCmy() {
     }
 
     public QueryVoCmy(Map<String, Object> params) {
 
         this.query = "";
-        this.cmyStatus = "";
         List<String> keys = params.keySet().stream().map(String::toString).collect(Collectors.toList());
 
 
@@ -66,14 +58,12 @@ public class QueryVoCmy {
         return !"".equals(this.query) ||  cityId != 0 || regionId != 0 ;
     }
 
-
     @Override
     public String toString() {
         return "QueryVoCmy{" +
                 "query='" + query + '\'' +
                 ", cityId=" + cityId +
                 ", regionId=" + regionId +
-                ", cmyStatus='" + cmyStatus + '\'' +
                 '}';
     }
 }

@@ -68,17 +68,17 @@ public class HouseServiceImpl implements HouseService {
                 : Arrays.stream(ids).filter(id -> houseDao.selectStatus(id) == 1).toArray(Long[]::new);
     }
 
-    @Override
-    public List<HouseEs> genHouseEsList(Long[] ids) {
-        //根据当前通过id获取house体信息
-        List<House> houseList = houseDao.selectHouseList(ids);
-        return houseList.stream().map(house -> {
-            Community community = communityDao.selectOneById(house.getCmyId());
-            HouseEs houseEs = new HouseEs(house, community);
-            houseEs.setHStyle(house.getHStyle().replaceAll("\\u00A0"," ").split(" +")[0]);
-            return houseEs;
-        }).collect(Collectors.toList());
-    }
+//    @Override
+//    public List<HouseEs> genHouseEsList(Long[] ids) {
+//        //根据当前通过id获取house体信息
+//        List<House> houseList = houseDao.selectHouseList(ids);
+//        return houseList.stream().map(house -> {
+//            Community community = communityDao.selectOneById(house.getCmyId());
+//            HouseEs houseEs = new HouseEs(house, community);
+//            houseEs.setHosStyle(house.getHosStyle().replaceAll("\\u00A0"," ").split(" +")[0]);
+//            return houseEs;
+//        }).collect(Collectors.toList());
+//    }
 
     @Override
     public void updateBathIssueStatus(Long[] id, short status) {
@@ -98,6 +98,28 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public int delNewHouseByCmyId(List<Long> ids) {
         return houseDao.delNewHouseByCmyId(ids);
+    }
+
+    @Override
+    public int updateOneHouse(House house) {
+        return houseDao.updateOneHouse(house);
+    }
+
+    @Override
+    public int addNewHouse(House house) {
+        int i = houseDao.insertHouse(house);
+        if (i>0){
+            i=houseDao.insertNewHouse(house);
+            if (i>0){
+                houseDao.delHouseById(house.getHosId());
+            }
+        }
+        return i;
+    }
+
+    @Override
+    public int deleteNewHouseByIds(List<Long> ids) {
+        return houseDao.delNewHouseByIds(ids);
     }
 
 }

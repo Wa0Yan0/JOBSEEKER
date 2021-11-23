@@ -5,6 +5,7 @@ import com.atom.jobseeker.rent.pojo.House;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface HouseDao {
      * @param hId
      * @return 返回House实例对象
      */
-    House selectOneById(Long hId);
+    House selectOneById(@Param("hosId") Long hId);
 
     /**
      * 搜索总记录数
@@ -46,7 +47,7 @@ public interface HouseDao {
      * @param hId
      * @return
      */
-    Short selectStatus(@Param("hId") Long hId);
+    Short selectStatus(@Param("hosId") Long hId);
 
     /**
      * 根据id集合获取到对应的租房信息集合
@@ -90,4 +91,46 @@ public interface HouseDao {
      * @return
      */
     int delNewHouseByCmyId(@Param("ids")List<Long> ids);
+
+    /**
+     * 根据房屋id删除临时表中的房屋信息
+     * @param ids
+     * @return
+     */
+
+    /**
+     * 对单条房屋信息进行更新
+     * @param house
+     * @return
+     */
+    int updateOneHouse(@Param("house")House house);
+
+    /**
+     * 删除正式表指定ID的房屋信息
+     * @param ids
+     * @return
+     */
+    int delNewHouseByIds(@Param("ids")List<Long> ids);
+
+    /**
+     * 删除临时表指定id的房屋信息
+     * @param id
+     * @return
+     */
+    int delHouseById(@Param("id")Long id);
+
+
+    /**
+     * 向正式表插入单条新的房屋信息
+     * @param house
+     * @return
+     */
+    int insertNewHouse(@Param("house")House house);
+
+    /**
+     * 向临时表插入单条新的房屋信息
+     * @param house
+     * @return
+     */
+    int insertHouse(@Param("house")House house);
 }

@@ -55,28 +55,45 @@ public class HouseController {
     }
 
 
-    /**
-     * 将需要索引的数据上传到ElasticSearch中，并修改发布状态为通过
-     *
-     * @param ids
-     * @return
-     */
-    @RequestMapping("/up")
-    public R up(@RequestBody Long[] ids) {
-        Long[] newIds = houseService.filterIds(ids, "up");
-        try {
-            if (newIds.length != 0) {
-                List<HouseEs> houseEsList = houseService.genHouseEsList(newIds);
-                elasticService.upToElastic(houseEsList, EsConstant.House_INDEX);
-                houseService.updateBathIssueStatus(ids, (short) 1);
-                return R.ok();
-            } else {
-                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
-        }
+//    /**
+//     * 将需要索引的数据上传到ElasticSearch中，并修改发布状态为通过
+//     *
+//     * @param ids
+//     * @return
+//     */
+//    @RequestMapping("/up")
+//    public R up(@RequestBody Long[] ids) {
+//        Long[] newIds = houseService.filterIds(ids, "up");
+//        try {
+//            if (newIds.length != 0) {
+//                List<HouseEs> houseEsList = houseService.genHouseEsList(newIds);
+//                elasticService.upToElastic(houseEsList, EsConstant.House_INDEX);
+//                houseService.updateBathIssueStatus(ids, (short) 1);
+//                return R.ok();
+//            } else {
+//                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
+//        }
+//    }
+
+
+    @RequestMapping("/update")
+    public R updateHouse(@RequestBody House house){
+        return houseService.updateOneHouse(house)>0?R.ok():R.error(510,"更新单条房屋信息失败");
+    }
+
+    @RequestMapping("/add")
+    public R addNewHouse(@RequestBody House house){
+        System.out.println(house);
+        return houseService.addNewHouse(house)>0?R.ok():R.error(511,"添加单条房屋信息失败");
+    }
+
+    @RequestMapping("/delete")
+    public R deleteNewHouse(@RequestBody List<Long> ids){
+        return houseService.deleteNewHouseByIds(ids)>0?R.ok():R.error(512,"删除房屋信息失败");
     }
 
 

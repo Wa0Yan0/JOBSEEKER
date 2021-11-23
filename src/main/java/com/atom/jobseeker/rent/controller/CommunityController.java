@@ -30,7 +30,7 @@ public class CommunityController {
     @RequestMapping("/{id}")
     public R getCmyById(@PathVariable("id") Long cmyId){
         Community community = communityService.queryCommunityById(cmyId);
-        return R.ok().wrapper("cmyinfor",community);
+        return community!=null?R.ok().wrapper("cmyinfor",community):R.error(513,"查询小区信息失败");
     }
 
     /**
@@ -41,7 +41,7 @@ public class CommunityController {
     @RequestMapping("/cmylists")
     public R getCmyLists(@RequestParam Map<String, Object> params){
         PageUtils pageUtils = communityService.queryCmyListsWithPage(params);
-        return R.ok().wrapper("page", pageUtils);
+        return !pageUtils.getList().isEmpty() ? R.ok().wrapper("page", pageUtils):R.error(514,"查询小区信息列表失败");
     }
 
     /**
@@ -84,7 +84,6 @@ public class CommunityController {
     @RequestMapping("/delete")
     public R delNewCmy(@RequestBody List<Long> ids){
         houseService.delNewHouseByCmyId(ids);
-        communityService.delNewCmy(ids);
-        return R.ok();
+        return communityService.delNewCmy(ids)>0?R.ok():R.error(515,"小区信息删除失败！");
     }
 }

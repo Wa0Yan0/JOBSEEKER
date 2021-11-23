@@ -2,6 +2,9 @@ package com.atom.jobseeker.common.constant;
 
 import java.util.HashMap;
 
+/**
+ * @author SunLei
+ */
 public class IssueStatus extends HashMap<Short, String> {
 
     public IssueStatus(){
