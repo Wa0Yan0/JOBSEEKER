@@ -78,7 +78,7 @@
         </where>
         limit #{begin},#{pagesize}
     </select>
-    <select id="selectStatus" resultType="java.lang.String">
+    <select id="selectStatus" resultType="java.lang.Short">
         select h_status from rent_house where h_id=#{hId}
     </select>
     <select id="selectHouseList" resultType="com.atom.jobseeker.rent.pojo.House">

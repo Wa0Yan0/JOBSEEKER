@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +23,13 @@ public class House {
     private String hFacility;
     private String hPay;
     private String hRequires;
-    private String hStatus;
+    private String hDate;
+    private Short hStatus;
     private Long cmyId;
     private Long regionId;
     private Long cityId;
+
+    public void sethDate(Date hDate) {
+        this.hDate = new SimpleDateFormat("yyyy-MM-dd").format(hDate);
+    }
 }

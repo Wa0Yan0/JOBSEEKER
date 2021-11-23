@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,30 +62,10 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public Long[] filterIds(Long[] ids) {
-//        //初始化当前id列表
-//        ArrayList<Long> ids = new ArrayList<>();
-//        //遍历参数中id
-//        for (Long id : checkVo.getIds()) {
-//            //elasticsearch上线分支
-//            if (checkVo.getStatus() != null) {
-//                if ("通过".equals(checkVo.getStatus())) {
-//                    String issueStatus = houseDao.selectStatus(id);
-//                    //防止通过的数据重复更新，过滤已经通过的
-//                    if (!"通过".equals(issueStatus)) {
-//                        ids.add(id);
-//                    }
-//                }
-//            }
-//            //elasticsearch下线分支
-//            else {
-//                String issueStatus = houseDao.selectStatus(id);
-//                if ("通过".equals(issueStatus)) {
-//                    ids.add(id);
-//                }
-//            }
-//        }
-        return ids;
+    public Long[] filterIds(Long[] ids,String methodName) {
+        return "up".equals(methodName)
+                ? Arrays.stream(ids).filter(id -> houseDao.selectStatus(id) == 0).toArray(Long[]::new)
+                : Arrays.stream(ids).filter(id -> houseDao.selectStatus(id) == 1).toArray(Long[]::new);
     }
 
     @Override
@@ -100,7 +81,7 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public void updateBathIssueStatus(Long[] id, String status) {
+    public void updateBathIssueStatus(Long[] id, short status) {
 
     }
 

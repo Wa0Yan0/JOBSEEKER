@@ -27,10 +27,11 @@ public interface HouseService {
 
     /**
      * 过滤更改状态请求中的id进行上线或下线
-     * @param checkVo
+     * @param ids
+     * @param methodName
      * @return  返回需要更改状态的id集合
      */
-    Long[] filterIds(Long[] ids);
+    Long[] filterIds(Long[] ids,String methodName);
 
     /**
      * 生成jobEs模块的实体
@@ -44,7 +45,7 @@ public interface HouseService {
      * @param id
      * @param status
      */
-    void updateBathIssueStatus(Long[] id, String status);
+    void updateBathIssueStatus(Long[] id, short status);
 
     /**
      * 将指定cmy_id修改成指定的数值
@@ -65,7 +66,7 @@ public interface HouseService {
 
     /**
      * 删除正式表属于指定cmyId的房屋信息
-     * @param id
+     * @param ids
      * @return
      */
     int delNewHouseByCmyId(List<Long> ids);

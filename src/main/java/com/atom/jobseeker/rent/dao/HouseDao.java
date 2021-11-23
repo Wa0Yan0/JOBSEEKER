@@ -46,7 +46,7 @@ public interface HouseDao {
      * @param hId
      * @return
      */
-    String selectStatus(@Param("hId") Long hId);
+    Short selectStatus(@Param("hId") Long hId);
 
     /**
      * 根据id集合获取到对应的租房信息集合
