@@ -40,4 +40,9 @@ public class AttrServiceImpl implements AttrService {
             region.setChildren(regionChildren);
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Region> queryRegionParentList() {
+        return attrDao.selectRegionParentList();
+    }
 }

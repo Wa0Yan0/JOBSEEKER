@@ -28,4 +28,10 @@ public interface AttrService {
      * @return
      */
     List<Region> queryRegionList();
+
+    /**
+     * 查询所有城市
+     * @return
+     */
+    List<Region> queryRegionParentList();
 }

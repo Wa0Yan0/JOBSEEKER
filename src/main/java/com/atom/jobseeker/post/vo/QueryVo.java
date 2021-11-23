@@ -58,7 +58,7 @@ public class QueryVo {
             this.issueStatus = Short.parseShort(params.get("issueStatus").toString());
         }
         if (keys.contains("issueDate")) {
-            this.issueDate = params.get("issueDate").toString().split("T")[0];
+            this.issueDate = params.get("issueDate").toString();
         }
     }
 

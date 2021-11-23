@@ -22,13 +22,6 @@ public class AttrController {
     @Resource
     AttrService attrService;
 
-    @RequestMapping("/attrsList")
-    public R allAttrList() {
-        List<City> cities = attrService.queryCityList();
-        List<Major> majors = attrService.queryMajorList();
-        return R.ok().wrapper("cityList", cities).wrapper("majorList", majors);
-    }
-
     @RequestMapping("/cities")
     public R cityList() {
         List<City> cities = attrService.queryCityList();
@@ -45,5 +38,11 @@ public class AttrController {
     public R getMajorList() {
         List<Major> majorList = attrService.queryMajorList();
         return R.ok().wrapper("majorList", majorList);
+    }
+
+    @RequestMapping("/region/parents")
+    public R getRegionParentList() {
+        List<Region> cities = attrService.queryRegionParentList();
+        return R.ok().wrapper("cityList", cities);
     }
 }

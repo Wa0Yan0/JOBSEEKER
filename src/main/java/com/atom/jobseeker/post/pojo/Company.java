@@ -16,6 +16,6 @@ public class Company {
     private String field;
     private String address;
     private String introduce;
+    private Integer regionId;
     private String img;
-    private Integer cityId;
 }

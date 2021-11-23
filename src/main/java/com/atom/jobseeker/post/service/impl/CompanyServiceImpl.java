@@ -67,4 +67,9 @@ public class CompanyServiceImpl implements CompanyService {
         return  companyDao.selectNameList(query);
     }
 
+    @Override
+    public Long queryCompanyId(String companyName) {
+        return companyDao.selectCompanyId(companyName);
+    }
+
 }

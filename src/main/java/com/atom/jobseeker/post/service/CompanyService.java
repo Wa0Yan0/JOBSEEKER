@@ -53,4 +53,11 @@ public interface CompanyService {
      * @return
      */
     List<CompanyNameVo> queryNameList(String query);
+
+    /**
+     * 查询公司名称
+     * @param companyName
+     * @return
+     */
+    Long queryCompanyId(String companyName);
 }

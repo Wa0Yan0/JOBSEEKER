@@ -46,6 +46,9 @@
     <select id="selectNameList" resultType="com.atom.jobseeker.post.vo.CompanyNameVo">
         select id, name from pos_company where name like "%"#{query}"%"
     </select>
+    <select id="selectCompanyId" resultType="java.lang.Long">
+        select id from pos_company where name = #{companyName}
+    </select>
 
     <insert id="insert">
         <selectKey resultType="Long" keyProperty="id">
