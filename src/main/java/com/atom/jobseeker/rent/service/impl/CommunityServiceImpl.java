@@ -2,7 +2,6 @@ package com.atom.jobseeker.rent.service.impl;
 
 import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.pojo.Community;
-import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.CommunityService;
 import com.atom.jobseeker.rent.utils.IPage;
 import com.atom.jobseeker.rent.utils.PageUtils;

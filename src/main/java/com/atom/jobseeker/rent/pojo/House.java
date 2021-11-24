@@ -25,6 +25,10 @@ public class House {
      */
     private BigDecimal hosMoney;
     /**
+     * 交付方式
+     */
+    private String hosPay;
+    /**
      * 租赁方式
      */
     private String hosManner;
@@ -52,14 +56,15 @@ public class House {
      * 房屋设施
      */
     private String hosFacility;
+
     /**
-     * 交付方式
+     * 房屋面积
      */
-    private String hosPay;
+    private String hosArea;
     /**
-     * 租房要求
+     * 房屋楼层
      */
-    private String hosRequires;
+    private String hosFloor;
     /**
      * 发布日期
      */

@@ -46,6 +46,22 @@ public class Community {
      */
     private String cmyPmc;
     /**
+     * 小区总户数
+     */
+    private String cmyHolds;
+    /**
+     * 停车位
+     */
+    private String cmyPark;
+    /**
+     * 绿化率
+     */
+    private String cmyGreen;
+    /**
+     * 小区数据源地址
+     */
+    private String cmyUrl;
+    /**
      * 地区id
      */
     private Long regionId;

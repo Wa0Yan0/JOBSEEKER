@@ -9,10 +9,10 @@
         insert into rent_house select * from house
     </insert>
     <insert id="insertNewHouse">
-        insert into rent_house values(#{house.hosId},#{house.hosTitle},#{house.hosMoney},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosPay},#{house.hosRequires},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
+        insert into rent_house values(#{house.hosId},#{house.hosTitle},#{house.hosMoney},#{house.hosPay},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosArea},#{house.hosFloor},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
     </insert>
     <insert id="insertHouse" keyProperty="hosId" useGeneratedKeys="true">
-        insert into house(hos_title,hos_money,hos_manner,hos_style,hos_towards,hos_tag,hos_intro,hos_imgUrl,hos_facility,hos_pay,hos_requires,hos_date,hos_status,cmy_id,region_id,city_id) values(#{house.hosTitle},#{house.hosMoney},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosPay},#{house.hosRequires},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
+        insert into house(hos_title,hos_money,hos_pay,hos_manner,hos_style,hos_towards,hos_tag,hos_intro,hos_imgUrl,hos_facility,hos_area,hos_floor,hos_date,hos_status,cmy_id,region_id,city_id) values(#{house.hosTitle},#{house.hosMoney},#{house.hosPay},#{house.hosManner},#{house.hosStyle},#{house.hosTowards},#{house.hosTag},#{house.hosIntro},#{house.hosImgUrl},#{house.hosFacility},#{house.hosArea},#{house.hosFloor},#{house.hosDate},#{house.hosStatus},#{house.cmyId},#{house.regionId},#{house.cityId})
     </insert>
 
 
@@ -24,7 +24,7 @@
     </update>
 
     <update id="updateOneHouse">
-        update rent_house set hos_title=#{house.hosTitle},hos_money=#{house.hosMoney},hos_Manner=#{house.hosManner},hos_style=#{house.hosStyle},hos_towards=#{house.hosTowards},hos_tag=#{house.hosTag},hos_intro=#{house.hosIntro},hos_pay=#{house.hosPay},hos_requires=#{house.hosRequires},cmy_id=#{house.cmyId} where hos_id=#{house.hosId}
+        update rent_house set hos_title=#{house.hosTitle},hos_money=#{house.hosMoney},hos_pay=#{house.hosPay},hos_Manner=#{house.hosManner},hos_style=#{house.hosStyle},hos_towards=#{house.hosTowards},hos_tag=#{house.hosTag},hos_intro=#{house.hosIntro},hos_imgUrl=#{house.hosImgUrl},cmy_id=#{house.cmyId} where hos_id=#{house.hosId}
     </update>
 
     <delete id="delHouse">

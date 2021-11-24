@@ -10,14 +10,14 @@
     </insert>
 
     <insert id="insertCmy" keyProperty="cmyId" useGeneratedKeys="true" >
-        insert into community(cmy_name,cmy_region,cmy_location,cmy_style,cmy_year,cmy_cost,cmy_pmc,region_id,city_id) values(#{cmy.cmyName},#{cmy.cmyRegion},#{cmy.cmyLocation},#{cmy.cmyStyle},#{cmy.cmyYear},#{cmy.cmyCost},#{cmy.cmyPmc},#{cmy.regionId},#{cmy.cityId})
+        insert into community(cmy_name,cmy_region,cmy_location,cmy_style,cmy_year,cmy_cost,cmy_pmc,cmy_holds,cmy_park,cmy_green,cmy_url,region_id,city_id) values(#{cmy.cmyName},#{cmy.cmyRegion},#{cmy.cmyLocation},#{cmy.cmyStyle},#{cmy.cmyYear},#{cmy.cmyCost},#{cmy.cmyPmc},#{cmy.cmyHolds},#{cmy.cmyPark},#{cmy.cmyGreen},#{cmy.cmyUrl},#{cmy.regionId},#{cmy.cityId})
     </insert>
     <insert id="insertNewCmy">
-        insert into rent_community(cmy_id,cmy_name,cmy_region,cmy_location,cmy_style,cmy_year,cmy_cost,cmy_pmc,region_id,city_id) values(#{cmy.cmyId},#{cmy.cmyName},#{cmy.cmyRegion},#{cmy.cmyLocation},#{cmy.cmyStyle},#{cmy.cmyYear},#{cmy.cmyCost},#{cmy.cmyPmc},#{cmy.regionId},#{cmy.cityId})
+        insert into rent_community(cmy_id,cmy_name,cmy_region,cmy_location,cmy_style,cmy_year,cmy_cost,cmy_pmc,cmy_holds,cmy_park,cmy_green,cmy_url,region_id,city_id) values(#{cmy.cmyId},#{cmy.cmyName},#{cmy.cmyRegion},#{cmy.cmyLocation},#{cmy.cmyStyle},#{cmy.cmyYear},#{cmy.cmyCost},#{cmy.cmyPmc},#{cmy.cmyHolds},#{cmy.cmyPark},#{cmy.cmyGreen},#{cmy.cmyUrl},#{cmy.regionId},#{cmy.cityId})
     </insert>
 
     <update id="updateCmy">
-        update rent_community set cmy_name=#{cmy.cmyName},cmy_region=#{cmy.cmyRegion},cmy_location=#{cmy.cmyLocation},cmy_style=#{cmy.cmyStyle},cmy_year=#{cmy.cmyYear},cmy_cost=#{cmy.cmyCost},cmy_pmc=#{cmy.cmyPmc},region_id=#{cmy.regionId},city_id=#{cmy.cityId}
+        update rent_community set cmy_name=#{cmy.cmyName},cmy_region=#{cmy.cmyRegion},cmy_location=#{cmy.cmyLocation},cmy_style=#{cmy.cmyStyle},cmy_year=#{cmy.cmyYear},cmy_cost=#{cmy.cmyCost},cmy_pmc=#{cmy.cmyPmc},cmy_holds=#{cmy.cmyHolds},cmy_park=#{cmy.cmyPark},cmy_green=#{cmy.cmyGreen},region_id=#{cmy.regionId},city_id=#{cmy.cityId}
         where cmy_id=#{cmy.cmyId}
     </update>
 
