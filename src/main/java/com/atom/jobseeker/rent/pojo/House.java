@@ -49,6 +49,10 @@ public class House {
      */
     private String hosIntro;
     /**
+     * 房屋检索缩略图
+     */
+    private String hosSmallImg;
+    /**
      * 房屋图片
      */
     private String hosImgUrl;
