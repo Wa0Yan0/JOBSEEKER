@@ -45,4 +45,7 @@ public class AttrServiceImpl implements AttrService {
     public List<Region> queryRegionParentList() {
         return attrDao.selectRegionParentList();
     }
+
+
+
 }

@@ -1,9 +1,11 @@
 package com.atom.jobseeker.rent.service.impl;
 
+import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.pojo.Community;
 import com.atom.jobseeker.rent.utils.IPage;
 import com.atom.jobseeker.rent.utils.PageUtils;
+import com.atom.jobseeker.rent.vo.HouseVo;
 import com.atom.jobseeker.rent.vo.QueryVo;
 import com.atom.jobseeker.rent.dao.HouseDao;
 import com.atom.jobseeker.rent.pojo.House;
@@ -12,6 +14,7 @@ import com.atom.jobseeker.search.es.HouseEs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +48,9 @@ public class HouseServiceImpl implements HouseService {
      * @return 返回分页好的实例对象，对象包含House实例对象列表
      */
     @Override
-    public PageUtils queryHousesInforWithPage(Map<String, Object> params) {
+    public PageUtils queryHousesInforWithPage(Map<String, Object> params,List<Region> regions) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuffer stringBuffer=new StringBuffer();
         //将高级查询信息封装到高级查询类
         QueryVo queryVo = new QueryVo(params);
         //将分页信息封装到分页类
@@ -56,8 +61,23 @@ public class HouseServiceImpl implements HouseService {
         PageUtils pageUtils = new PageUtils(iPage);
         //根据查询条件查询到信息列表
         List<House> houses = houseDao.selectListWithQuery(queryVo, iPage.getBegin(), iPage.getPageSize());
+        List<HouseVo> houseVos = houses.stream().map(hos -> {
+            HouseVo houseVo = new HouseVo(hos);
+            houseVo.setHosDate(dateFormat.format(hos.getHosDate()));
+            houseVo.setHosStatus(hos.getHosStatus());
+            regions.stream().filter(region -> region.getId()==hos.getCityId()).forEach(region -> {
+                stringBuffer.append(region.getName()+"-");
+                List<Region> children = region.getChildren();
+                children.stream().filter(chil -> chil.getId()==hos.getRegionId()).forEach(ch->{
+                    stringBuffer.append(ch.getName());
+                });
+            });
+            houseVo.setHosRegion(stringBuffer.toString());
+            stringBuffer.delete(0,stringBuffer.length());
+            return houseVo;
+        }).collect(Collectors.toList());
         //将信息列表封装到page工具类并返回页面
-        pageUtils.setList(houses);
+        pageUtils.setList(houseVos);
         return pageUtils;
     }
 

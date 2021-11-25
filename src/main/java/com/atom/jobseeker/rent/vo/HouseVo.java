@@ -1,5 +1,7 @@
-package com.atom.jobseeker.rent.pojo;
+package com.atom.jobseeker.rent.vo;
 
+import com.atom.jobseeker.common.constant.IssueStatus;
+import com.atom.jobseeker.rent.pojo.House;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +10,13 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author SunLei
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class House {
+public class HouseVo {
     /**
      * 房屋id
      */
@@ -23,7 +28,7 @@ public class House {
     /**
      * 房租价格
      */
-    private BigDecimal hosMoney;
+    private String hosMoney;
     /**
      * 交付方式
      */
@@ -61,6 +66,10 @@ public class House {
      */
     private String hosImgUrl;
     /**
+     * 所属地区
+     */
+    private String hosRegion;
+    /**
      * 房屋设施
      */
     private String hosFacility;
@@ -76,11 +85,11 @@ public class House {
     /**
      * 发布日期
      */
-    private Date hosDate;
+    private String hosDate;
     /**
      * 发布状态
      */
-    private Short hosStatus;
+    private String hosStatus;
     /**
      * 小区ID
      */
@@ -94,5 +103,24 @@ public class House {
      */
     private Long cityId;
 
+    public HouseVo(House house) {
+        this.hosId = house.getHosId();
+        this.hosTitle = house.getHosTitle();
+        this.hosMoney = house.getHosMoney().toString()+"元/月";
+        this.hosManner = house.getHosManner();
+        this.hosStyle = house.getHosStyle();
+        this.hosSmallImg = house.getHosImgUrl().split(";")[0];
+    }
 
+    public void setHosRegion(String hosRegion) {
+        this.hosRegion = hosRegion;
+    }
+
+    public void setHosDate(String hosDate) {
+        this.hosDate = hosDate;
+    }
+
+    public void setHosStatus(Short hosStatus) {
+        this.hosStatus= IssueStatus.getStatus(hosStatus);
+    }
 }

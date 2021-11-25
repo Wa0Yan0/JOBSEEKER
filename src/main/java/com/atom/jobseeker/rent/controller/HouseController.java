@@ -1,5 +1,7 @@
 package com.atom.jobseeker.rent.controller;
 
+import com.atom.jobseeker.attr.pojo.Region;
+import com.atom.jobseeker.attr.service.AttrService;
 import com.atom.jobseeker.common.constant.ErrorEnum;
 import com.atom.jobseeker.common.utils.R;
 import com.atom.jobseeker.rent.pojo.House;
@@ -31,6 +33,8 @@ public class HouseController {
     CommunityService communityService;
     @Autowired
     private ElasticService elasticService;
+    @Autowired
+    private AttrService attrService;
 
     /**
      * 获取单条租房和对应小区详情
@@ -50,7 +54,8 @@ public class HouseController {
      */
     @RequestMapping("/houselists")
     public R getHouseLists(@RequestParam Map<String, Object> params){
-        PageUtils pageUtils = houseService.queryHousesInforWithPage(params);
+        List<Region> regions = attrService.queryRegionList();
+        PageUtils pageUtils = houseService.queryHousesInforWithPage(params,regions);
         return R.ok().wrapper("page", pageUtils);
     }
 
