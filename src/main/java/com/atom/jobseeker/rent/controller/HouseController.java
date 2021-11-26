@@ -8,6 +8,7 @@ import com.atom.jobseeker.rent.pojo.House;
 import com.atom.jobseeker.rent.service.CommunityService;
 import com.atom.jobseeker.rent.service.HouseService;
 import com.atom.jobseeker.rent.utils.PageUtils;
+import com.atom.jobseeker.rent.vo.HouseVo;
 import com.atom.jobseeker.search.constant.EsConstant;
 import com.atom.jobseeker.search.es.HouseEs;
 import com.atom.jobseeker.search.es.JobEs;
@@ -43,7 +44,7 @@ public class HouseController {
      */
     @RequestMapping("/{id}")
     public R getHouseById(@PathVariable("id") Long hId){
-        House house = houseService.queryHouseById(hId);
+        HouseVo house = houseService.queryHouseById(hId,attrService.queryRegionList());
         return R.ok().wrapper("houseinfor",house).wrapper("cmyinfor",communityService.queryCommunityById(house.getCmyId()));
     }
 

@@ -1,5 +1,6 @@
 package com.atom.jobseeker.rent.service.impl;
 
+import com.atom.jobseeker.attr.dao.AttrDao;
 import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.pojo.Community;
@@ -37,9 +38,13 @@ public class HouseServiceImpl implements HouseService {
      * @return 返回house实例对象
      */
     @Override
-    public House queryHouseById(Long hId) {
+    public HouseVo queryHouseById(Long hId,List<Region> regions) {
+        StringBuffer stringBuffer=new StringBuffer();
         House house = houseDao.selectOneById(hId);
-        return house;
+        HouseVo houseVo=new HouseVo(house);
+        houseVo.setFields(house);
+        houseVo.setHosRegion(getRegion(stringBuffer,regions,house.getCityId(),house.getRegionId()).toString());
+        return houseVo;
     }
 
     /**
@@ -63,17 +68,7 @@ public class HouseServiceImpl implements HouseService {
         List<House> houses = houseDao.selectListWithQuery(queryVo, iPage.getBegin(), iPage.getPageSize());
         List<HouseVo> houseVos = houses.stream().map(hos -> {
             HouseVo houseVo = new HouseVo(hos);
-            houseVo.setHosDate(dateFormat.format(hos.getHosDate()));
-            houseVo.setHosStatus(hos.getHosStatus());
-            regions.stream().filter(region -> region.getId()==hos.getCityId()).forEach(region -> {
-                stringBuffer.append(region.getName()+"-");
-                List<Region> children = region.getChildren();
-                children.stream().filter(chil -> chil.getId()==hos.getRegionId()).forEach(ch->{
-                    stringBuffer.append(ch.getName());
-                });
-            });
-            houseVo.setHosRegion(stringBuffer.toString());
-            stringBuffer.delete(0,stringBuffer.length());
+            houseVo.setHosRegion(getRegion(stringBuffer, regions, hos.getCityId(), hos.getRegionId()).toString());
             return houseVo;
         }).collect(Collectors.toList());
         //将信息列表封装到page工具类并返回页面
@@ -141,5 +136,21 @@ public class HouseServiceImpl implements HouseService {
     public int deleteNewHouseByIds(List<Long> ids) {
         return houseDao.delNewHouseByIds(ids);
     }
+
+    @Override
+    public StringBuffer getRegion(StringBuffer stringBuffer, List<Region> regions, Long cityId, Long regionId) {
+        if(stringBuffer.length()!=0){
+            stringBuffer.delete(0,stringBuffer.length());
+        }
+        regions.stream().filter(region -> region.getId()==cityId).forEach(region -> {
+            stringBuffer.append(region.getName()+"-");
+            List<Region> children = region.getChildren();
+            children.stream().filter(chil -> chil.getId()==regionId).forEach(ch->{
+                stringBuffer.append(ch.getName());
+            });
+        });
+        return stringBuffer;
+    }
+
 
 }

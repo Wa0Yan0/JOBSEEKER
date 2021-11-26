@@ -3,6 +3,7 @@ package com.atom.jobseeker.rent.service;
 import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.rent.utils.PageUtils;
 import com.atom.jobseeker.rent.pojo.House;
+import com.atom.jobseeker.rent.vo.HouseVo;
 import com.atom.jobseeker.search.es.HouseEs;
 
 import java.util.List;
@@ -15,9 +16,10 @@ public interface HouseService {
     /**
      * 根据单个ID搜索到对应的租房信息
      * @param hId
+     * @param regions
      * @return  返回house实例对象
      */
-    House queryHouseById(Long hId);
+    HouseVo queryHouseById(Long hId,List<Region> regions);
 
     /**
      * 将搜索分页好的House实例对象封装到分页对象的列表中
@@ -93,4 +95,14 @@ public interface HouseService {
      * @return
      */
     int deleteNewHouseByIds(List<Long> ids);
+
+    /**
+     * 获取区域信息
+     * @param stringBuffer
+     * @param regions
+     * @param cityId
+     * @param regionId
+     * @return
+     */
+    StringBuffer getRegion(StringBuffer stringBuffer,List<Region> regions,Long cityId,Long regionId);
 }

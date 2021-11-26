@@ -110,17 +110,26 @@ public class HouseVo {
         this.hosManner = house.getHosManner();
         this.hosStyle = house.getHosStyle();
         this.hosSmallImg = house.getHosImgUrl().split(";")[0];
+        this.hosDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(house.getHosDate());
+        this.hosStatus= IssueStatus.getStatus(house.getHosStatus());
     }
 
     public void setHosRegion(String hosRegion) {
         this.hosRegion = hosRegion;
     }
 
-    public void setHosDate(String hosDate) {
-        this.hosDate = hosDate;
-    }
-
-    public void setHosStatus(Short hosStatus) {
-        this.hosStatus= IssueStatus.getStatus(hosStatus);
+    public void setFields(House house){
+        this.hosPay=house.getHosPay();
+        this.hosType=house.getHosType();
+        this.hosTowards=house.getHosTowards();
+        this.hosTag=house.getHosTag();
+        this.hosIntro=house.getHosIntro();
+        this.hosImgUrl=house.getHosImgUrl();
+        this.hosFacility=house.getHosFacility();
+        this.hosArea=house.getHosArea();
+        this.hosFloor=house.getHosFloor();
+        this.cmyId=house.getCmyId();
+        this.regionId=house.getRegionId();
+        this.cityId=house.getCityId();
     }
 }
