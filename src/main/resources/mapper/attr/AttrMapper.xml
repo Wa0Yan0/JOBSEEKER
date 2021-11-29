@@ -5,36 +5,45 @@
 
 
 <mapper namespace="com.atom.jobseeker.attr.dao.AttrDao">
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into attr_region(name, parent_id) values(#{region.name}, #{region.parentId})
     </insert>
+
     <insert id="bathInsert">
         insert into attr_region(name, parent_id) values
         <foreach collection="regions" item="region" separator=",">
-             (#{region.name}, #{region.parentId})
+            (#{region.name}, #{region.parentId})
         </foreach>
     </insert>
+
     <select id="selectCityList" resultType="com.atom.jobseeker.attr.pojo.City">
         select id, name from city;
     </select>
+
     <select id="selectMajorList" resultType="com.atom.jobseeker.attr.pojo.Major">
         select id, name from attr_major;
     </select>
+
     <select id="selectLocationList" resultType="com.atom.jobseeker.attr.pojo.Location">
         select r_name from location where c_id=#{cityId};
     </select>
+
     <select id="selectRegionList" resultType="com.atom.jobseeker.attr.pojo.Region">
         select * from attr_region
     </select>
+
     <resultMap id="RegionMap" type="HashMap">
         <result property="cityName" column="cityName"/>
         <result property="regionName" column="regionName"/>
     </resultMap>
+
     <select id="selectRegionById" resultMap="RegionMap">
         select ar2.name cityName, ar1.name regionName from attr_region ar1 left join attr_region ar2 on ar1.parent_id = ar2.id where ar1.id =#{regionId};
     </select>
+
     <select id="selectRegionParentList" resultType="com.atom.jobseeker.attr.pojo.Region">
         select id, name from attr_region where parent_id = 0;
     </select>
-</mapper>
 
+</mapper>

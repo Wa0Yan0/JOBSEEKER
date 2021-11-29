@@ -19,6 +19,7 @@
     <update id="updateCmyId">
         update house set cmy_id=#{idTwo} where cmy_id=#{idOne}
     </update>
+
     <update id="updateRegion">
         update rent_house set region_id=#{rId},city_id=#{cId} where cmy_id=#{cmyId}
     </update>
@@ -26,12 +27,13 @@
     <update id="updateOneHouse">
         update rent_house set hos_title=#{house.hosTitle},hos_money=#{house.hosMoney},hos_pay=#{house.hosPay},hos_Manner=#{house.hosManner},hos_style=#{house.hosStyle},hos_type=#{house.hosType},hos_towards=#{house.hosTowards},hos_tag=#{house.hosTag},hos_intro=#{house.hosIntro},hos_area=#{house.hosArea},hos_floor=#{house.hosFloor},cmy_id=#{house.cmyId} where hos_id=#{house.hosId}
     </update>
+
     <update id="updateStatus">
         update rent_house set hos_status=#{code} where hos_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </update> b
+    </update>
 
     <delete id="delHouse">
         delete from house
