@@ -61,29 +61,29 @@ public class HouseController {
     }
 
 
-//    /**
-//     * 将需要索引的数据上传到ElasticSearch中，并修改发布状态为通过
-//     *
-//     * @param ids
-//     * @return
-//     */
-//    @RequestMapping("/up")
-//    public R up(@RequestBody Long[] ids) {
-//        Long[] newIds = houseService.filterIds(ids, "up");
-//        try {
-//            if (newIds.length != 0) {
-//                List<HouseEs> houseEsList = houseService.genHouseEsList(newIds);
-//                elasticService.upToElastic(houseEsList, EsConstant.House_INDEX);
-//                houseService.updateBathIssueStatus(ids, (short) 1);
-//                return R.ok();
-//            } else {
-//                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
-//        }
-//    }
+    /**
+     * 将需要索引的数据上传到ElasticSearch中，并修改发布状态为通过
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/up")
+    public R up(@RequestBody Long[] ids) {
+        Long[] newIds = houseService.filterIds(ids, "up");
+        try {
+            if (newIds.length != 0) {
+                List<HouseEs> houseEsList = houseService.genHouseEsList(newIds);
+                elasticService.upToElastic(houseEsList, EsConstant.House_INDEX);
+                houseService.updateBathIssueStatus(ids, (short) 1);
+                return R.ok();
+            } else {
+                return R.error(ErrorEnum.HOUSE_RE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_RE_PUSH_ERROR.getMsg());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return R.error(ErrorEnum.HOUSE_PUSH_ERROR.getCode(), ErrorEnum.HOUSE_PUSH_ERROR.getMsg());
+        }
+    }
 
 
     @RequestMapping("/update")

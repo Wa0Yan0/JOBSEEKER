@@ -37,12 +37,12 @@ public interface HouseService {
      */
     Long[] filterIds(Long[] ids,String methodName);
 
-//    /**
-//     * 生成jobEs模块的实体
-//     * @param ids
-//     * @return
-//     */
-//    List<HouseEs> genHouseEsList(Long[] ids);
+    /**
+     * 生成jobEs模块的实体
+     * @param ids
+     * @return
+     */
+    List<HouseEs> genHouseEsList(Long[] ids);
 
     /**
      * 修改发布状态
