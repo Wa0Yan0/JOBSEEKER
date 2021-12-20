@@ -110,8 +110,9 @@ public class HouseVo {
         this.hosManner = house.getHosManner();
         this.hosStyle = house.getHosStyle();
         this.hosSmallImg = house.getHosImgUrl().split(";")[0];
-        this.hosDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(house.getHosDate());
+        this.hosDate=new SimpleDateFormat("yyyy-MM-dd").format(house.getHosDate());
         this.hosStatus= IssueStatus.getStatus(house.getHosStatus());
+        this.hosArea=house.getHosArea();
     }
 
     public void setHosRegion(String hosRegion) {

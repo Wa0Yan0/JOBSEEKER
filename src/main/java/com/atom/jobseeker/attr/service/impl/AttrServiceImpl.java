@@ -5,6 +5,7 @@ import com.atom.jobseeker.attr.pojo.City;
 import com.atom.jobseeker.attr.pojo.Major;
 import com.atom.jobseeker.attr.pojo.Region;
 import com.atom.jobseeker.attr.service.AttrService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class AttrServiceImpl implements AttrService {
 
-    @Resource
+    @Autowired
     private AttrDao attrDao;
 
     @Override

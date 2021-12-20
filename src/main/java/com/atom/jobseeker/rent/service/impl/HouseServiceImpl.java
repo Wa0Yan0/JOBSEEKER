@@ -2,6 +2,7 @@ package com.atom.jobseeker.rent.service.impl;
 
 import com.atom.jobseeker.attr.dao.AttrDao;
 import com.atom.jobseeker.attr.pojo.Region;
+import com.atom.jobseeker.attr.service.AttrService;
 import com.atom.jobseeker.rent.dao.CommunityDao;
 import com.atom.jobseeker.rent.pojo.Community;
 import com.atom.jobseeker.rent.utils.IPage;
@@ -31,6 +32,8 @@ public class HouseServiceImpl implements HouseService {
     private HouseDao houseDao;
     @Autowired
     private CommunityDao communityDao;
+    @Autowired
+    private AttrService attrService;
 
     /**
      * 根据单个ID搜索到对应的租房信息
@@ -83,21 +86,25 @@ public class HouseServiceImpl implements HouseService {
                 : Arrays.stream(ids).filter(id -> houseDao.selectStatus(id) == 1).toArray(Long[]::new);
     }
 
-//    @Override
-//    public List<HouseEs> genHouseEsList(Long[] ids) {
-//        //根据当前通过id获取house体信息
-//        List<House> houseList = houseDao.selectHouseList(ids);
-//        return houseList.stream().map(house -> {
-//            Community community = communityDao.selectOneById(house.getCmyId());
-//            HouseEs houseEs = new HouseEs(house, community);
-//            houseEs.setHosStyle(house.getHosStyle().replaceAll("\\u00A0"," ").split(" +")[0]);
-//            return houseEs;
-//        }).collect(Collectors.toList());
-//    }
+    @Override
+    public List<HouseEs> genHouseEsList(Long[] ids) {
+        List<Region> regions = attrService.queryRegionList();
+        StringBuffer stringBuffer=new StringBuffer();
+
+        //根据当前通过id获取house体信息
+        List<House> houseList = houseDao.selectHouseList(ids);
+        return houseList.stream().map(house -> {
+            Community community = communityDao.selectOneById(house.getCmyId());
+            HouseEs houseEs = new HouseEs(house, community);
+            houseEs.setHosStyle(house.getHosStyle().replaceAll("\\u00A0"," ").split(" +")[0]);
+            houseEs.setHouseRegion(getRegion(stringBuffer,regions,house.getCityId(),house.getRegionId()).toString());
+            return houseEs;
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public void updateBathIssueStatus(Long[] id, short status) {
-
+        houseDao.updateStatus(id,status);
     }
 
     @Override

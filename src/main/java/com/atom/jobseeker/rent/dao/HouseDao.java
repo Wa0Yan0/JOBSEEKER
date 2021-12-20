@@ -133,4 +133,12 @@ public interface HouseDao {
      * @return
      */
     int insertHouse(@Param("house")House house);
+
+    /**
+     * 改变房屋审核状态
+     * @param ids
+     * @param code
+     * @return
+     */
+    int updateStatus(@Param("ids")Long[] ids,@Param("code")short code);
 }

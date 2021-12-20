@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/attr/")
+@RequestMapping("/attr")
 public class AttrController {
 
     @Resource

@@ -54,6 +54,10 @@ public class HouseEs {
      */
     private String cmyRegion;
     /**
+     * 房屋地区
+     */
+    private String houseRegion;
+    /**
      * 区ID
      */
     private Integer regionId;
@@ -62,8 +66,25 @@ public class HouseEs {
      */
     private Integer cityId;
 
+    public HouseEs(House house,Community community) {
+        this.id = house.getHosId();
+        this.hosTitle = house.getHosTitle();
+        this.hosManner = house.getHosManner();
+        this.hosMoney = house.getHosMoney();
+        this.hosStyle = house.getHosStyle();
+        this.hosDate = new SimpleDateFormat("yyyy-MM-dd").format(house.getHosDate());
+        this.hosImgUrl = house.getHosImgUrl();
+        this.cmyName = community.getCmyName();
+        this.cmyRegion = community.getCmyRegion();
+        this.regionId = Math.toIntExact(house.getRegionId());
+        this.cityId = Math.toIntExact(house.getRegionId());
+    }
 
     public void setHosDate(Date hosDate) {
         this.hosDate = new SimpleDateFormat("yyyy-MM-dd").format(hosDate);
+    }
+
+    public void setHouseRegion(String houseRegion) {
+        this.houseRegion = houseRegion;
     }
 }
