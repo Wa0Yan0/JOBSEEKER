@@ -99,4 +99,17 @@ public interface JobDao {
      * @return
      */
     List<Post> batchSelectJobAndCompanyById(@Param("ids") Long[] ids);
+
+    /**
+     * 通过公司id查询job表的所有数据
+     * @param id
+     * @return
+     */
+    List<Job> selectOldJobList(@Param("ids") Long id);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteBatch(@Param("ids") Long[] ids);
 }

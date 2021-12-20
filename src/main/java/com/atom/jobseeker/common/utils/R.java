@@ -16,34 +16,31 @@ public class R extends HashMap<String, Object> {
     }
 
     /**
-     * 跟新、保存、删除成功，直接返回初始化值
+     * 实例化对象
      */
     public static R ok() {
         return new R();
     }
 
     /**
-     * 查询成功，封装数据
+     * 成功，封装数据
      *
      * @param key
      * @param value
      * @return
      */
     public R wrapper(String key, Object value) {
-        super.put(key, value);
+        put(key, value);
         return this;
     }
 
     /**
-     * 错误返回，状态码和错误信息
+     * 错误，设置状态码和错误信息
      * @param code
      * @param msg
      * @return
      */
     public static R error(int code, String msg) {
-        R r = new R();
-        r.put("code", code);
-        r.put("msg", msg);
-        return r;
+        return R.ok().wrapper("code", code).wrapper("msg", msg);
     }
 }

@@ -68,4 +68,10 @@ public interface JobService {
      * @return
      */
     PostVo queryJobAndCompany(Long id);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteBatch(Long[] ids);
 }

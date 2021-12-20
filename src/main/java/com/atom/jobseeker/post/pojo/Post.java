@@ -19,7 +19,7 @@ public class Post {
     private Short issueStatus;
     private String jobInfo;
     private Integer regionId;
-    private Integer regionParentId;
+    private Integer cityId;
     private Integer majorId;
     private Long companyId;
     private String companyName;

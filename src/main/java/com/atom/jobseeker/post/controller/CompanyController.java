@@ -35,7 +35,6 @@ public class CompanyController {
     @RequestMapping("/{id}")
     public R getCompanyInfo(@PathVariable("id") Long id){
         Company company = companyService.queryCompanyById(id);
-        System.out.println(company);
         return R.ok().wrapper("company", company);
     }
 

@@ -59,7 +59,7 @@ public interface CompanyDao {
     void update(@Param("company") Company company);
 
     /**
-     * 查询所有数据
+     * 查询pos_company表的所有数据
      * @return
      */
     List<Company> selectList();
@@ -83,4 +83,10 @@ public interface CompanyDao {
      * @return
      */
     Long selectCompanyId(@Param("companyName") String companyName);
+
+    /**
+     * 查询company表的所有数据
+     * @return
+     */
+    List<Company> selectOldCompanyList();
 }

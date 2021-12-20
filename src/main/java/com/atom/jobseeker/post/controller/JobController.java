@@ -89,8 +89,8 @@ public class JobController {
      * @return
      */
     @RequestMapping("/fail")
-    public R changeStatus(@RequestBody Long[] ids) {
-        jobService.updateBathIssueStatus(ids, (short) 2);
+    public R delete(@RequestBody Long[] ids) {
+        jobService.deleteBatch(ids);
         return R.ok();
     }
 

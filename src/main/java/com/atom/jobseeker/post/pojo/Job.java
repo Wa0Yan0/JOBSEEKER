@@ -24,6 +24,6 @@ public class Job {
     private String jobInfo;
     private Long companyId;
     private Integer regionId;
-    private Integer regionParentId;
+    private Integer cityId;
     private Integer majorId;
 }

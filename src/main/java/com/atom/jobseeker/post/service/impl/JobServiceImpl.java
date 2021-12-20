@@ -4,9 +4,7 @@ import com.atom.jobseeker.attr.dao.AttrDao;
 import com.atom.jobseeker.common.constant.IssueStatus;
 import com.atom.jobseeker.common.utils.IPage;
 import com.atom.jobseeker.common.utils.PageUtils;
-import com.atom.jobseeker.post.dao.CompanyDao;
 import com.atom.jobseeker.post.dao.JobDao;
-import com.atom.jobseeker.post.pojo.Company;
 import com.atom.jobseeker.post.pojo.Job;
 import com.atom.jobseeker.post.pojo.Post;
 import com.atom.jobseeker.post.service.JobService;
@@ -16,8 +14,6 @@ import com.atom.jobseeker.post.vo.QueryVo;
 import com.atom.jobseeker.search.es.JobEs;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import com.atom.jobseeker.common.constant.JobConstant;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
@@ -31,9 +27,6 @@ public class JobServiceImpl implements JobService {
 
     @Resource
     private JobDao jobDao;
-
-    @Resource
-    private CompanyDao companyDao;
 
     @Resource
     private AttrDao attrDao;
@@ -115,6 +108,11 @@ public class JobServiceImpl implements JobService {
         return postVo;
     }
 
+    @Override
+    public void deleteBatch(Long[] ids) {
+        jobDao.deleteBatch(ids);
+    }
+
 
     /**
      * 计算薪资区间的平均值
@@ -127,7 +125,7 @@ public class JobServiceImpl implements JobService {
         return salaryMin.add(salaryMax).divide(new BigDecimal("2"));
     }
 
-    private static int parseSalaryToInt(BigDecimal salary){
+    private static int parseSalaryToInt(BigDecimal salary) {
         return Integer.parseInt(String.valueOf(salary.divide(new BigDecimal("1000.00"))));
     }
 }

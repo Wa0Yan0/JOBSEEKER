@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -122,11 +123,15 @@ class JobseekerApplicationTests {
         }
     }
 
+    public static BigDecimal handleSalary(BigDecimal salary){
+        int salaryInt = salary.intValue();
+        return salaryInt % 1000 == 0 ? salary : new BigDecimal(salaryInt / 1000 * 1000);
+    }
+
     @Test
     void insertReturn(){
-        Long[] ids = new Long[2];
-        ids[0] = 1L;
-        ids[1] = 2L;
+        Job job = jobDao.selectOneById(424L);
+        System.out.println("最低薪资： " + handleSalary(job.getSalaryMin()) + "\t最高薪资：" + handleSalary(job.getSalaryMax()));
     }
 
 

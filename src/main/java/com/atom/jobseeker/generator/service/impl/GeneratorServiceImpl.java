@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,16 +43,24 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Resource
     private HouseDao houseDao;
 
+    public static BigDecimal handleSalary(BigDecimal salary){
+        int salaryInt = salary.intValue();
+        return salaryInt % 1000 == 0 ? salary : new BigDecimal(salaryInt / 1000 * 1000);
+    }
 
     @Override
     public void genPost() {
-        List<Company> companyList = companyDao.selectList();
+        List<Company> companyList = companyDao.selectOldCompanyList();
         companyList.forEach(company -> {
-            Long companyId = companyDao.insert(company);
-            List<Job> jobList = jobDao.selectListByCompanyId(company.getId());
+            long companyId = company.getId();
+            companyDao.insert(company);
+            System.out.println(company.getId());
+            List<Job> jobList = jobDao.selectOldJobList(companyId);
             if (jobList != null) {
                 jobList.forEach(job -> {
-                    job.setCompanyId(companyId);
+                    job.setSalaryMin(handleSalary(job.getSalaryMin()));
+                    job.setSalaryMax(handleSalary(job.getSalaryMax()));
+                    job.setCompanyId(company.getId());
                     jobDao.insert(job);
                 });
             }
@@ -73,7 +82,6 @@ public class GeneratorServiceImpl implements GeneratorService {
                     attrDao.bathInsert(regionChild);
                 }
             }
-
         });
     }
 
